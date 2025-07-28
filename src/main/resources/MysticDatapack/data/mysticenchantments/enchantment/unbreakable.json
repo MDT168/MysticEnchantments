@@ -1,0 +1,19 @@
+{
+  "anvil_cost": 4,
+  "description": {
+    "text": "Unbreakable",
+    "color": "#ff0a0a"
+  },
+  "max_cost": {
+    "base": 60,
+    "per_level_above_first": 20
+  },
+  "max_level": 1,
+  "min_cost": {
+    "base": 10,
+    "per_level_above_first": 20
+  },
+  "slots": [],
+  "supported_items": "#minecraft:enchantable/durability",
+  "weight": 2
+}

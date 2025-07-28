@@ -1,0 +1,37 @@
+{
+  "anvil_cost": 2,
+  "description": "Fisher\u0027s Grace",
+  "effects": {
+    "minecraft:fishing_time_reduction": [
+      {
+        "effect": {
+          "type": "minecraft:multiply",
+          "value": {
+            "type": "minecraft:linear",
+            "base": 0.975,
+            "per_level_above_first": -0.025
+          },
+          "factor": {
+            "type": "minecraft:linear",
+            "base": 0.975,
+            "per_level_above_first": -0.025
+          }
+        }
+      }
+    ]
+  },
+  "max_cost": {
+    "base": 50,
+    "per_level_above_first": 10
+  },
+  "min_cost": {
+    "base": 10,
+    "per_level_above_first": 5
+  },
+  "max_level": 5,
+  "slots": [
+    "mainhand"
+  ],
+  "supported_items": "#minecraft:enchantable/fishing",
+  "weight": 5
+}

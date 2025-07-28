@@ -1,0 +1,6 @@
+name: MysticEnchantments
+version: '1.14.7'
+main: com.mdt168.mysticEnchantments.MysticEnchantments
+api-version: '1.21.4'
+authors: [ MDT168 ]
+description: Adds a bunch custom enchantments to the game with a new humane enchantment system.

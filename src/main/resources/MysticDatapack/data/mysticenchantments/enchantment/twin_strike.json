@@ -1,0 +1,22 @@
+{
+  "anvil_cost": 1,
+  "description": {
+    "text": "Twin Strike",
+    "color": "#e20aff"
+  },
+  "max_cost": {
+    "base": 21,
+    "per_level_above_first": 11
+  },
+  "max_level": 4,
+  "min_cost": {
+    "base": 1,
+    "per_level_above_first": 11
+  },
+  "primary_items": "#minecraft:enchantable/sword",
+  "slots": [
+    "mainhand"
+  ],
+  "supported_items": "#minecraft:swords",
+  "weight": 1
+}

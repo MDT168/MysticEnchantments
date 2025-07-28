@@ -1,0 +1,16 @@
+{
+  "anvil_cost": 1,
+  "description": "Alchemist\u0027s Touch",
+  "max_cost": {
+    "base": 51,
+    "per_level_above_first": 10
+  },
+  "max_level": 2,
+  "min_cost": {
+    "base": 1,
+    "per_level_above_first": 10
+  },
+  "slots": [],
+  "supported_items": "#minecraft:swords",
+  "weight": 10
+}

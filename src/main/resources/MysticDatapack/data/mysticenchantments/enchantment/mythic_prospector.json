@@ -1,0 +1,25 @@
+{
+  "anvil_cost": 4,
+  "description": {
+    "text": "Mythic Prospector",
+    "color": "#ff0a0a"
+  },
+  "exclusive_set": [
+    "mysticenchantments:enhanced_prospector",
+    "mysticenchantments:refined_prospector",
+    "mysticenchantments:elite_prospector",
+    "mysticenchantments:basic_prospector"
+  ],
+  "max_cost": {
+    "base": 60,
+    "per_level_above_first": 20
+  },
+  "max_level": 5,
+  "min_cost": {
+    "base": 10,
+    "per_level_above_first": 20
+  },
+  "slots": [],
+  "supported_items": "#minecraft:enchantable/mining",
+  "weight": 2
+}

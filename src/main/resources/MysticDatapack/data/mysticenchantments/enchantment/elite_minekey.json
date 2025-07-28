@@ -1,0 +1,20 @@
+{
+   "exclusive_set": "#mysticenchantments:minekey",
+   "anvil_cost": 2,
+   "description": {
+     "text": "Elite Minekey",
+     "color": "#e20aff"
+   },
+   "max_cost": {
+     "base": 50,
+     "per_level_above_first": 10
+   },
+   "min_cost": {
+     "base": 10,
+     "per_level_above_first": 5
+   },
+   "max_level": 3,
+   "slots": [],
+   "supported_items": "#minecraft:pickaxes",
+   "weight": 5
+ }

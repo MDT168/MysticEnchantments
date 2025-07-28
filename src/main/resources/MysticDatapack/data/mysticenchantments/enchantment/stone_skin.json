@@ -1,0 +1,19 @@
+{
+  "anvil_cost": 4,
+  "description": {
+    "text": "Stone Skin",
+    "color": "#1bff0a"
+  },
+  "max_cost": {
+    "base": 60,
+    "per_level_above_first": 20
+  },
+  "max_level": 3,
+  "min_cost": {
+    "base": 10,
+    "per_level_above_first": 20
+  },
+  "slots": [],
+  "supported_items": "#minecraft:enchantable/chest_armor",
+  "weight": 2
+}

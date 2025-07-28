@@ -1,0 +1,19 @@
+{
+  "anvil_cost": 1,
+  "description": {
+    "text": "Lifesteal",
+    "color": "#ff0a0a"
+  },
+  "max_cost": {
+    "base": 12,
+    "per_level_above_first": 11
+  },
+  "max_level": 2,
+  "min_cost": {
+    "base": 1,
+    "per_level_above_first": 11
+  },
+  "slots": [],
+  "supported_items": "#minecraft:enchantable/sword",
+  "weight": 10
+}

@@ -1,0 +1,27 @@
+{
+  "anvil_cost": 4,
+  "description": {
+    "text": "Enhanced Experiencer",
+    "color": "#1bff0a"
+  },
+  "exclusive_set": [
+    "mysticenchantments:basic_experiencer",
+    "mysticenchantments:refined_experiencer",
+    "mysticenchantments:elite_experiencer",
+    "mysticenchantments:mythic_experiencer"
+  ],
+  "max_cost": {
+    "base": 60,
+    "per_level_above_first": 20
+  },
+  "max_level": 5,
+  "min_cost": {
+    "base": 10,
+    "per_level_above_first": 20
+  },
+  "slots": [
+    "mainhand"
+  ],
+  "supported_items": "#minecraft:enchantable/weapon",
+  "weight": 2
+}

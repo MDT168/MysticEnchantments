@@ -1,0 +1,19 @@
+{
+  "anvil_cost": 2,
+  "description": {
+    "text": "Seismic Slam",
+    "color": "#1bff0a"
+  },
+  "max_cost": {
+    "base": 50,
+    "per_level_above_first": 10
+  },
+  "min_cost": {
+    "base": 10,
+    "per_level_above_first": 5
+  },
+  "max_level": 1,
+  "slots": [],
+  "supported_items": "#minecraft:enchantable/foot_armor",
+  "weight": 5
+}
