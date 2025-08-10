@@ -93,8 +93,7 @@ public class PagedEnchantmentsGui {
     }
 
     public Inventory getPage(int page, Player player) {
-        if (pages.isEmpty()) return Helper.cloneInventory(format, "Empty Paged Enchantments");
-        Inventory inventory = Helper.cloneInventory(pages.get(Helper.betweenBounds(page - 1, 0, pages.size() - 1)), name);
+        Inventory inventory = pages.isEmpty() ? Helper.cloneInventory(format, name) : Helper.cloneInventory(pages.get(Helper.betweenBounds(page - 1, 0, pages.size() - 1)), name);
         Helper.updateViewer(player, inventory);
         return inventory;
     }

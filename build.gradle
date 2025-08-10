@@ -4,7 +4,6 @@ plugins {
 }
 
 group = 'com.mdt168'
-version = '1.21.5'
 
 repositories {
     mavenCentral()
@@ -26,7 +25,7 @@ dependencies {
     // (Optional) Slf4j API if you plan to log
     implementation 'org.slf4j:slf4j-api:2.0.10'
     implementation 'org.slf4j:slf4j-simple:2.0.10'
-    compileOnly("io.papermc.paper:paper-api:1.21.5-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
 }
 
 tasks {

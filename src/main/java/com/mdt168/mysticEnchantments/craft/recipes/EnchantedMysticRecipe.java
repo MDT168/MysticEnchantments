@@ -1,5 +1,7 @@
 package com.mdt168.mysticEnchantments.craft.recipes;
 
+import com.mdt168.mysticEnchantments.MysticEnchantments;
+import com.mdt168.mysticEnchantments.config.ConfigSettings;
 import com.mdt168.mysticEnchantments.craft.recipes.utility.FlexEnchantment;
 import com.mdt168.mysticEnchantments.craft.recipes.utility.MysticRecipeUtils;
 import org.bukkit.Material;
@@ -25,21 +27,24 @@ public class EnchantedMysticRecipe extends MysticRecipe {
         super(name, description, levelRequirement, material, amount, resultItem, requirements);
         this.flexEnchantment = flexEnchantment;
     }
-    public static EnchantedMysticRecipe register(String name, String description, int levelRequirement, Material material, ItemStack resultItem, List<ItemStack> requirements, FlexEnchantment flexEnchantment) {
+    public static EnchantedMysticRecipe register(String name, String description, int levelRequirement, Material material, ItemStack resultItem, List<ItemStack> requirements, FlexEnchantment flexEnchantment, boolean skipOnApiMode) {
         EnchantedMysticRecipe recipe = new EnchantedMysticRecipe(name, description, levelRequirement, material, resultItem, requirements, flexEnchantment);
-        MysticRecipeUtils.add(recipe);
+        if ((!(ConfigSettings.API_MODE.getValue() && skipOnApiMode))) MysticRecipeUtils.add(recipe);
+        else MysticEnchantments.blockedContentFromApiMode++;
         return recipe;
     }
 
-    public static EnchantedMysticRecipe register(String name, String description, int levelRequirement, ItemStack itemToDisplay, ItemStack resultItem, List<ItemStack> requirements, FlexEnchantment flexEnchantment) {
+    public static EnchantedMysticRecipe register(String name, String description, int levelRequirement, ItemStack itemToDisplay, ItemStack resultItem, List<ItemStack> requirements, FlexEnchantment flexEnchantment, boolean skipOnApiMode) {
         EnchantedMysticRecipe recipe = new EnchantedMysticRecipe(name, description, levelRequirement, itemToDisplay, resultItem, requirements, flexEnchantment);
-        MysticRecipeUtils.add(recipe);
+        if ((!(ConfigSettings.API_MODE.getValue() && skipOnApiMode))) MysticRecipeUtils.add(recipe);
+        else MysticEnchantments.blockedContentFromApiMode++;
         return recipe;
     }
 
-    public static EnchantedMysticRecipe register(String name, String description, int levelRequirement, Material material, int amount, ItemStack resultItem, List<ItemStack> requirements, FlexEnchantment flexEnchantment) {
+    public static EnchantedMysticRecipe register(String name, String description, int levelRequirement, Material material, int amount, ItemStack resultItem, List<ItemStack> requirements, FlexEnchantment flexEnchantment, boolean skipOnApiMode) {
         EnchantedMysticRecipe recipe = new EnchantedMysticRecipe(name, description, levelRequirement, material, amount, resultItem, requirements, flexEnchantment);
-        MysticRecipeUtils.add(recipe);
+        if ((!(ConfigSettings.API_MODE.getValue() && skipOnApiMode))) MysticRecipeUtils.add(recipe);
+        else MysticEnchantments.blockedContentFromApiMode++;
         return recipe;
     }
 

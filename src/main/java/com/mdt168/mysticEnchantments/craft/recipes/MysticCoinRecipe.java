@@ -1,5 +1,7 @@
 package com.mdt168.mysticEnchantments.craft.recipes;
 
+import com.mdt168.mysticEnchantments.MysticEnchantments;
+import com.mdt168.mysticEnchantments.config.ConfigSettings;
 import com.mdt168.mysticEnchantments.craft.recipes.utility.MysticRecipeUtils;
 import com.mdt168.mysticEnchantments.custom.Helper;
 import com.mdt168.mysticEnchantments.custom.InventoryUtils;
@@ -48,6 +50,26 @@ public class MysticCoinRecipe extends MysticRecipe {
     public static MysticCoinRecipe register(String name, String description, int levelRequirement, Material material, int amount, ItemStack resultItem, List<ItemStack> requirements, double mysticCoinsPrice) {
         MysticCoinRecipe recipe = new MysticCoinRecipe(name, description, levelRequirement, material, amount, resultItem, requirements, mysticCoinsPrice);
         MysticRecipeUtils.add(recipe);
+        return recipe;
+    }
+    public static MysticCoinRecipe register(String name, String description, int levelRequirement, Material material, ItemStack resultItem, List<ItemStack> requirements, double mysticCoinsPrice, boolean skipOnApiMode) {
+        MysticCoinRecipe recipe = new MysticCoinRecipe(name, description, levelRequirement, material, resultItem, requirements, mysticCoinsPrice);
+        if ((!(ConfigSettings.API_MODE.getValue() && skipOnApiMode))) MysticRecipeUtils.add(recipe);
+        else MysticEnchantments.blockedContentFromApiMode++;
+        return recipe;
+    }
+
+    public static MysticCoinRecipe register(String name, String description, int levelRequirement, ItemStack itemToDisplay, ItemStack resultItem, List<ItemStack> requirements, double mysticCoinsPrice, boolean skipOnApiMode) {
+        MysticCoinRecipe recipe = new MysticCoinRecipe(name, description, levelRequirement, itemToDisplay, resultItem, requirements, mysticCoinsPrice);
+        if ((!(ConfigSettings.API_MODE.getValue() && skipOnApiMode))) MysticRecipeUtils.add(recipe);
+        else MysticEnchantments.blockedContentFromApiMode++;
+        return recipe;
+    }
+
+    public static MysticCoinRecipe register(String name, String description, int levelRequirement, Material material, int amount, ItemStack resultItem, List<ItemStack> requirements, double mysticCoinsPrice, boolean skipOnApiMode) {
+        MysticCoinRecipe recipe = new MysticCoinRecipe(name, description, levelRequirement, material, amount, resultItem, requirements, mysticCoinsPrice);
+        if ((!(ConfigSettings.API_MODE.getValue() && skipOnApiMode))) MysticRecipeUtils.add(recipe);
+        else MysticEnchantments.blockedContentFromApiMode++;
         return recipe;
     }
 

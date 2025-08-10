@@ -1,6 +1,7 @@
 package com.mdt168.mysticEnchantments.custom.pluginoptions;
 
 import com.mdt168.mysticEnchantments.config.ConfigSetting;
+import com.mdt168.mysticEnchantments.config.ConfigSettings;
 import com.mdt168.mysticEnchantments.custom.ItemDataUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -73,6 +74,16 @@ public class MysticOption {
     public static MysticOption register(String name, String description, ConfigSetting<Double> price, Material material, OnPurchase onPurchase) {
         MysticOption option = new MysticOption(name, description, price, material, onPurchase);
         options.put(option.getId(), option);
+        return option;
+    }
+    public static MysticOption register(String name, String description, ConfigSetting<Double> price, OnPurchase onPurchase, boolean skipOnApiMode) {
+        MysticOption option = new MysticOption(name, description, price, onPurchase);
+        if ((!(ConfigSettings.API_MODE.getValue() && skipOnApiMode))) options.put(option.getId(), option);
+        return option;
+    }
+    public static MysticOption register(String name, String description, ConfigSetting<Double> price, Material material, OnPurchase onPurchase, boolean skipOnApiMode) {
+        MysticOption option = new MysticOption(name, description, price, material, onPurchase);
+        if ((!(ConfigSettings.API_MODE.getValue() && skipOnApiMode))) options.put(option.getId(), option);
         return option;
     }
 

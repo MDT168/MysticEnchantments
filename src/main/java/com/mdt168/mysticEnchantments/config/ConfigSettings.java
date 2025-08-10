@@ -60,6 +60,13 @@ public class ConfigSettings {
             true,
             "Mythic Tier accessible through the GUI"
     );
+
+    public static final ConfigSetting<Boolean> API_MODE = ConfigSetting.register(
+            "Api Mode",
+            false,
+            "All Registrations flagged with 'Api Mode' will not be registered if this is set to true, all Mystic Enchantments content is flagged with 'Api Mode'\n# Best used if you want to make your own registrations through add-ons\n# All Mystic Enchantments Content will be removed"
+    );
+
     public static final ConfigSetting<List<String>> BLOCKED_ENCHANTMENTS = ConfigSetting.register(
             "Blocked Enchantments",
             new ArrayList<>(),

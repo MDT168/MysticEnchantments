@@ -1,10 +1,9 @@
 package com.mdt168.mysticEnchantments.custom;
 
 import com.mdt168.mysticEnchantments.config.ConfigSettings;
+import com.mdt168.mysticEnchantments.craft.builders.ItemStackBuilder;
 import com.mdt168.mysticEnchantments.craft.recipes.utility.MysticRecipeUtils;
 import com.mdt168.mysticEnchantments.custom.dataUtils.EnchantmentsUtils;
-import com.mdt168.mysticEnchantments.custom.pluginoptions.MysticOption;
-import com.mdt168.mysticEnchantments.enchants.BlockedUtils;
 import com.mdt168.mysticEnchantments.enchants.EnchantmentStack;
 import com.mdt168.mysticEnchantments.enchants.HumaneEnchantment;
 import com.mdt168.mysticEnchantments.craft.recipes.MysticRecipe;
@@ -22,6 +21,62 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GuiHelper {
+    public static final MiniMessage mm = MiniMessage.miniMessage();
+    private static final ItemStack BASIC_ENCHANTS = ItemStackBuilder.of(Material.BOOK)
+            .setDisplayName(BookTiers.BASIC.getColor() + "Basic Enchantments")
+            .setId("basic_tab")
+            .setLore(List.of(
+                    mm.deserialize("<dark_gray><!i>Tier I"),
+                    Component.empty(),
+                    mm.deserialize(Gradient.YELLOW + "<!i><!i>Left-Click To Inspect Enchantments"),
+                    mm.deserialize(Gradient.YELLOW + "<!i><!i>Right-Click To Roll"),
+                    Component.empty()
+            ))
+            .build();
+    private static final ItemStack ENHANCED_ENCHANTS = ItemStackBuilder.of(Material.BOOK)
+            .setDisplayName(BookTiers.ENHANCED.getColor() + "Enhanced Enchantments")
+            .setId("enhanced_tab")
+            .setLore(List.of(
+                    mm.deserialize("<dark_gray><!i>Tier II"),
+                    Component.empty(),
+                    mm.deserialize(Gradient.YELLOW + "<!i>Left-Click To Inspect Enchantments"),
+                    mm.deserialize(Gradient.YELLOW + "<!i>Right-Click To Roll"),
+                    Component.empty()
+            ))
+            .build();
+    private static final ItemStack REFINED_ENCHANTS = ItemStackBuilder.of(Material.BOOK)
+            .setDisplayName(BookTiers.REFINED.getColor() + "Refined Enchantments")
+            .setId("refined_tab")
+            .setLore(List.of(
+                    mm.deserialize("<dark_gray><!i>Tier III"),
+                    Component.empty(),
+                    mm.deserialize(Gradient.YELLOW + "<!i>Left-Click To Inspect Enchantments"),
+                    mm.deserialize(Gradient.YELLOW + "<!i>Right-Click To Roll"),
+                    Component.empty()
+            ))
+            .build();
+    private static final ItemStack ELITE_ENCHANTS = ItemStackBuilder.of(Material.BOOK)
+            .setDisplayName(BookTiers.ELITE.getColor() + "Elite Enchantments")
+            .setId("elite_tab")
+            .setLore(List.of(
+                    mm.deserialize("<dark_gray><!i>Tier IV"),
+                    Component.empty(),
+                    mm.deserialize(Gradient.YELLOW + "<!i>Left-Click To Inspect Enchantments"),
+                    mm.deserialize(Gradient.YELLOW + "<!i>Right-Click To Roll"),
+                    Component.empty()
+            ))
+            .build();
+    private static final ItemStack MYTHIC_ENCHANTS = ItemStackBuilder.of(Material.BOOK)
+            .setDisplayName(BookTiers.MYTHIC.getColor() + "Mythic Enchantments")
+            .setId("mythic_tab")
+            .setLore(List.of(
+                    mm.deserialize("<dark_gray><!i>Tier V"),
+                    Component.empty(),
+                    mm.deserialize(Gradient.YELLOW + "<!i>Left-Click To Inspect Enchantments"),
+                    mm.deserialize(Gradient.YELLOW + "<!i>Right-Click To Roll"),
+                    Component.empty()
+            ))
+            .build();
     public static List<EnchantmentStack> getBasicEnchantments() {
         return EnchantmentsUtils.getEnchantments(BookTiers.BASIC);
     }
@@ -36,47 +91,6 @@ public class GuiHelper {
     }
     public static List<EnchantmentStack> getMythicEnchantments() {
         return EnchantmentsUtils.getEnchantments(BookTiers.MYTHIC);
-    }
-    public static List<MysticOption> getOptions() {
-        return MysticOption.getOptions();
-    }
-    public static Inventory getItemsGui(Player player) {
-        Inventory inventory = Bukkit.createInventory(
-                null,
-                27,
-                MiniMessage.miniMessage().deserialize("<!i><light_purple>Mystic Enchanter - <reset><green>Items")
-        );
-        List<MysticOption> items = getOptions();
-        for (int i = 0; i < items.size() && i < inventory.getSize(); i++) {
-            inventory.setItem(i, items.get(i).getItemStack());
-        }
-        inventory.setItem(26, createBack());
-        inventory.setItem(22, createViewer(player));
-        return inventory;
-    }
-    public static Inventory getItemsGui() {
-        Inventory inventory = Bukkit.createInventory(
-                null,
-                27
-        );
-        List<MysticOption> items = getOptions();
-        for (int i = 0; i < items.size() && i < inventory.getSize(); i++) {
-            inventory.setItem(i, items.get(i).getItemStack());
-        }
-        inventory.setItem(26, createBack());
-        ItemStack humaneViewer = new ItemStack(Material.BLACK_BANNER);
-        MiniMessage mm = MiniMessage.miniMessage();
-        humaneViewer.editMeta(meta -> {
-            meta.displayName(mm.deserialize(Gradient.BLUE + "<!i>View Humane Enchantments"));
-            meta.lore(List.of(
-                    mm.deserialize("<!i><yellow>- View the humane enchantments that you are enchanted with"),
-                    mm.deserialize("<!i><green>- Click to view")
-            ));
-        });
-        ItemDataUtils.setData(humaneViewer, "humane_viewer");
-        inventory.setItem(inventory.getSize() - 9, humaneViewer);
-
-        return inventory;
     }
     public static List<HumaneEnchantment> getHumanBasicEnchantments() {
         return EnchantmentsUtils.getHumaneEnchantments(BookTiers.BASIC);
@@ -97,481 +111,20 @@ public class GuiHelper {
         return HumaneEnchantment.getRegistries();
     }
 
-    public static Inventory getBasicGui(Player player) {
-        Inventory inventory = Bukkit.createInventory(null, 45);
-        List<EnchantmentStack> enchantments = getBasicEnchantments();
-        List<HumaneEnchantment> humaneEnchantments = getHumanBasicEnchantments();
-        ItemStack glassPane = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
-        ItemMeta meta = glassPane.getItemMeta();
-        meta.setHideTooltip(true);
-        glassPane.setItemMeta(meta);
-        int i = 0;
-        while (i < inventory.getSize() && i < enchantments.size()) {
-            inventory.setItem(i, Helper.createBook(enchantments.get(i)));
-            i++;
-        }
-        for (int j = 0; i < inventory.getSize() && j < humaneEnchantments.size(); j++) {
-            inventory.setItem(i, Helper.createBook(humaneEnchantments.get(j)));
-            i++;
-        }
-        for (int k = inventory.getSize() - 18; k < inventory.getSize() - 9; k++) inventory.setItem(k, glassPane);
-        inventory.setItem(inventory.getSize() - 1, createBack());
-        inventory.setItem(inventory.getSize() - 5, createViewer(player));
-        return inventory;
-    }
-    public static Inventory getBasicGui() {
-        Inventory inventory = Bukkit.createInventory(null, 45);
-        List<EnchantmentStack> enchantments = getBasicEnchantments();
-        List<HumaneEnchantment> humaneEnchantments = getHumanBasicEnchantments();
-        ItemStack glassPane = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
-        ItemMeta meta = glassPane.getItemMeta();
-        meta.setHideTooltip(true);
-        glassPane.setItemMeta(meta);
-        int i = 0;
-        while (i < inventory.getSize() && i < enchantments.size()) {
-            inventory.setItem(i, Helper.createBook(enchantments.get(i)));
-            i++;
-        }
-        for (int j = 0; i < inventory.getSize() && j < humaneEnchantments.size(); j++) {
-            inventory.setItem(i, Helper.createBook(humaneEnchantments.get(j)));
-            i++;
-        }
-        for (int k = inventory.getSize() - 18; k < inventory.getSize() - 9; k++) inventory.setItem(k, glassPane);
-        inventory.setItem(inventory.getSize() - 1, createBack());
-        return inventory;
-    }
-
-    public static Inventory getFormat(Material material) {
-        Inventory inventory = Bukkit.createInventory(null, 54);
-        ItemStack glassPane = new ItemStack(material);
-        ItemMeta meta = glassPane.getItemMeta();
-        meta.setHideTooltip(true);
-        glassPane.setItemMeta(meta);
-        int i = 0;
-        for (int k = inventory.getSize() - 18; k < inventory.getSize() - 9; k++) inventory.setItem(k, glassPane);
-        inventory.setItem(inventory.getSize() - 1, createBack());
-        return inventory;
-    }
-
-    public static Inventory getEnhancedGui(Player player) {
-        String name = "<!i><light_purple>Mystic Enchanter - <green>Enhanced";
-        Inventory inventory = Bukkit.createInventory(null, 45, MiniMessage.miniMessage().deserialize(name));
-        List<EnchantmentStack> enchantments = getEnhancedEnchantments();
-        List<HumaneEnchantment> humaneEnchantments = getHumanEnhancedEnchantments();
-        int i = 0;
-        ItemStack glassPane = new ItemStack(Material.GREEN_STAINED_GLASS_PANE);
-        ItemMeta meta = glassPane.getItemMeta();
-        meta.setHideTooltip(true);
-        glassPane.setItemMeta(meta);
-        while (i < inventory.getSize() && i < enchantments.size()) {
-            inventory.setItem(i, Helper.createBook(enchantments.get(i)));
-            i++;
-        }
-        for (int j = 0; i < inventory.getSize() && j < humaneEnchantments.size(); j++) {
-            inventory.setItem(i, Helper.createBook(humaneEnchantments.get(j)));
-            i++;
-        }
-        for (int k = inventory.getSize() - 18; k < inventory.getSize() - 9; k++) inventory.setItem(k, glassPane);
-        inventory.setItem(inventory.getSize() - 1, createBack());
-        inventory.setItem(inventory.getSize() - 5, createViewer(player));
-        return inventory;
-    }
-    public static Inventory getEnhancedGui() {
-        Inventory inventory = Bukkit.createInventory(null, 45);
-        List<EnchantmentStack> enchantments = getEnhancedEnchantments();
-        List<HumaneEnchantment> humaneEnchantments = getHumanEnhancedEnchantments();
-        int i = 0;
-        ItemStack glassPane = new ItemStack(Material.GREEN_STAINED_GLASS_PANE);
-        ItemMeta meta = glassPane.getItemMeta();
-        meta.setHideTooltip(true);
-        glassPane.setItemMeta(meta);
-        while (i < inventory.getSize() && i < enchantments.size()) {
-            if (BlockedUtils.isBlocked(enchantments.get(i))) continue;
-            inventory.setItem(i, Helper.createBook(enchantments.get(i)));
-            i++;
-        }
-        for (int j = 0; i < inventory.getSize() && j < humaneEnchantments.size(); j++) {
-            if (BlockedUtils.isBlocked(humaneEnchantments.get(j))) continue;
-            inventory.setItem(i, Helper.createBook(humaneEnchantments.get(j)));
-            i++;
-        }
-        for (int k = inventory.getSize() - 18; k < inventory.getSize() - 9; k++) inventory.setItem(k, glassPane);
-        inventory.setItem(inventory.getSize() - 1, createBack());
-
-        return inventory;
-    }
-    public static Inventory getRefinedGui(Player player) {
-        String name = "<!i><light_purple>Mystic Enchanter - <green>Refined";
-        Inventory inventory = Bukkit.createInventory(null, 45, MiniMessage.miniMessage().deserialize(name));
-        List<EnchantmentStack> enchantments = getRefinedEnchantments();
-        List<HumaneEnchantment> humaneEnchantments = getHumanRefinedEnchantments();
-        ItemStack glassPane = new ItemStack(Material.BLUE_STAINED_GLASS_PANE);
-        ItemMeta meta = glassPane.getItemMeta();
-        meta.setHideTooltip(true);
-        glassPane.setItemMeta(meta);
-        int i = 0;
-        while (i < inventory.getSize() && i < enchantments.size()) {
-            inventory.setItem(i, Helper.createBook(enchantments.get(i)));
-            i++;
-        }
-        for (int j = 0; i < inventory.getSize() && j < humaneEnchantments.size(); j++) {
-            inventory.setItem(i, Helper.createBook(humaneEnchantments.get(j)));
-            i++;
-        }
-        for (int k = inventory.getSize() - 18; k < inventory.getSize() - 9; k++) inventory.setItem(k, glassPane);
-        inventory.setItem(inventory.getSize() - 1, createBack());
-        inventory.setItem(inventory.getSize() - 5, createViewer(player));
-        return inventory;
-    }
-    public static Inventory getRefinedGui() {
-        Inventory inventory = Bukkit.createInventory(null, 45);
-        List<EnchantmentStack> enchantments = getRefinedEnchantments();
-        List<HumaneEnchantment> humaneEnchantments = getHumanRefinedEnchantments();
-        ItemStack glassPane = new ItemStack(Material.BLUE_STAINED_GLASS_PANE);
-        ItemMeta meta = glassPane.getItemMeta();
-        meta.setHideTooltip(true);
-        glassPane.setItemMeta(meta);
-        int i = 0;
-        while (i < inventory.getSize() && i < enchantments.size()) {
-            if (BlockedUtils.isBlocked(enchantments.get(i))) continue;
-            inventory.setItem(i, Helper.createBook(enchantments.get(i)));
-            i++;
-        }
-        for (int j = 0; i < inventory.getSize() && j < humaneEnchantments.size(); j++) {
-            if (BlockedUtils.isBlocked(humaneEnchantments.get(j))) continue;
-            inventory.setItem(i, Helper.createBook(humaneEnchantments.get(j)));
-            i++;
-        }
-        for (int k = inventory.getSize() - 18; k < inventory.getSize() - 9; k++) inventory.setItem(k, glassPane);
-        inventory.setItem(inventory.getSize() - 1, createBack());
-        return inventory;
-    }
-    public static Inventory getEliteGui(Player player) {
-        String name = "<!i><light_purple>Mystic Enchanter - <green>Elite";
-        Inventory inventory = Bukkit.createInventory(null, 45, MiniMessage.miniMessage().deserialize(name));
-        List<EnchantmentStack> enchantments = getEliteEnchantments();
-        List<HumaneEnchantment> humaneEnchantments = getHumanEliteEnchantments();
-
-        int i = 0;
-        while (i < inventory.getSize() && i < enchantments.size()) {
-            inventory.setItem(i, Helper.createBook(enchantments.get(i)));
-            i++;
-        }
-        for (int j = 0; i < inventory.getSize() && j < humaneEnchantments.size(); j++) {
-            inventory.setItem(i, Helper.createBook(humaneEnchantments.get(j)));
-            i++;
-        }
-
-        ItemStack blackGlassPane = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
-        ItemMeta blackMeta = blackGlassPane.getItemMeta();
-        blackMeta.setHideTooltip(true);
-        blackGlassPane.setItemMeta(blackMeta);
-        while (i < inventory.getSize() && i < 27) {
-            inventory.setItem(i, blackGlassPane);
-            i++;
-        }
-        ItemStack glassPane = new ItemStack(Material.PURPLE_STAINED_GLASS_PANE);
-        ItemMeta meta = glassPane.getItemMeta();
-        meta.setHideTooltip(true);
-        glassPane.setItemMeta(meta);
-        for (int k = inventory.getSize() - 18; k < inventory.getSize() - 9; k++) inventory.setItem(k, glassPane);
-        inventory.setItem(inventory.getSize() - 1, createBack());
-        inventory.setItem(inventory.getSize() - 5, createViewer(player));
-        return inventory;
-    }
-    public static Inventory getEliteGui() {
-        Inventory inventory = Bukkit.createInventory(null, 45);
-        List<EnchantmentStack> enchantments = getEliteEnchantments();
-        List<HumaneEnchantment> humaneEnchantments = getHumanEliteEnchantments();
-
-        int i = 0;
-        while (i < inventory.getSize() && i < enchantments.size()) {
-            if (BlockedUtils.isBlocked(enchantments.get(i))) continue;
-            inventory.setItem(i, Helper.createBook(enchantments.get(i)));
-            i++;
-        }
-        for (int j = 0; i < inventory.getSize() && j < humaneEnchantments.size(); j++) {
-            if (BlockedUtils.isBlocked(humaneEnchantments.get(j))) continue;
-            inventory.setItem(i, Helper.createBook(humaneEnchantments.get(j)));
-            i++;
-        }
-
-        ItemStack blackGlassPane = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
-        ItemMeta blackMeta = blackGlassPane.getItemMeta();
-        blackMeta.setHideTooltip(true);
-        blackGlassPane.setItemMeta(blackMeta);
-        while (i < inventory.getSize() && i < 27) {
-            inventory.setItem(i, blackGlassPane);
-            i++;
-        }
-        ItemStack glassPane = new ItemStack(Material.PURPLE_STAINED_GLASS_PANE);
-        ItemMeta meta = glassPane.getItemMeta();
-        meta.setHideTooltip(true);
-        glassPane.setItemMeta(meta);
-        for (int k = inventory.getSize() - 18; k < inventory.getSize() - 9; k++) inventory.setItem(k, glassPane);
-        inventory.setItem(inventory.getSize() - 1, createBack());
-        return inventory;
-    }
-    public static Inventory getMythicGui(Player player) {
-        String name = "<!i><light_purple>Mystic Enchanter - <green>Mythic";
-        Inventory inventory = Bukkit.createInventory(null, 45, MiniMessage.miniMessage().deserialize(name));
-        List<EnchantmentStack> enchantments = getMythicEnchantments();
-        List<HumaneEnchantment> humaneEnchantments = getHumanMythicEnchantments();
-        int i = 0;
-        while (i < inventory.getSize() && i < enchantments.size()) {
-            inventory.setItem(i, Helper.createBook(enchantments.get(i)));
-            i++;
-        }
-        for (int j = 0; i < inventory.getSize() && j < humaneEnchantments.size(); j++) {
-            inventory.setItem(i, Helper.createBook(humaneEnchantments.get(j)));
-            i++;
-        }
-        ItemStack blackGlassPane = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
-        ItemMeta blackMeta = blackGlassPane.getItemMeta();
-        blackMeta.setHideTooltip(true);
-        blackGlassPane.setItemMeta(blackMeta);
-        while (i < inventory.getSize() && i < 27) {
-            inventory.setItem(i, blackGlassPane);
-            i++;
-        }
-        ItemStack glassPane = new ItemStack(Material.RED_STAINED_GLASS_PANE);
-        ItemMeta meta = glassPane.getItemMeta();
-        meta.setHideTooltip(true);
-        glassPane.setItemMeta(meta);
-        for (int k = inventory.getSize() - 18; k < inventory.getSize() - 9; k++) inventory.setItem(k, glassPane);
-        inventory.setItem(inventory.getSize() - 1, createBack());
-        inventory.setItem(inventory.getSize() - 5, createViewer(player));
-        return inventory;
-    }
-    public static Inventory getMythicGui() {
-        Inventory inventory = Bukkit.createInventory(null, 45);
-        List<EnchantmentStack> enchantments = getMythicEnchantments();
-        List<HumaneEnchantment> humaneEnchantments = getHumanMythicEnchantments();
-        int i = 0;
-        while (i < inventory.getSize() && i < enchantments.size()) {
-            if (BlockedUtils.isBlocked(enchantments.get(i))) continue;
-            inventory.setItem(i, Helper.createBook(enchantments.get(i)));
-            i++;
-        }
-        for (int j = 0; i < inventory.getSize() && j < humaneEnchantments.size(); j++) {
-            if (BlockedUtils.isBlocked(humaneEnchantments.get(j))) continue;
-            inventory.setItem(i, Helper.createBook(humaneEnchantments.get(j)));
-            i++;
-        }
-        ItemStack blackGlassPane = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
-        ItemMeta blackMeta = blackGlassPane.getItemMeta();
-        blackMeta.setHideTooltip(true);
-        blackGlassPane.setItemMeta(blackMeta);
-        while (i < inventory.getSize() && i < 27) {
-            inventory.setItem(i, blackGlassPane);
-            i++;
-        }
-        ItemStack glassPane = new ItemStack(Material.RED_STAINED_GLASS_PANE);
-        ItemMeta meta = glassPane.getItemMeta();
-        meta.setHideTooltip(true);
-        glassPane.setItemMeta(meta);
-        for (int k = inventory.getSize() - 18; k < inventory.getSize() - 9; k++) inventory.setItem(k, glassPane);
-        inventory.setItem(inventory.getSize() - 1, createBack());
-        return inventory;
-    }
-
-    public static Inventory getMainGui(Player player) {
-        String name = "<!i><light_purple>Mystic Enchanter";
-        Inventory inventory = Bukkit.createInventory(null, 54, MiniMessage.miniMessage().deserialize(name));
-
-        ItemStack exit = new ItemStack(Material.BARRIER);
-        ItemStack resourcesMenu = new ItemStack(Material.AMETHYST_BLOCK);
-        ItemStack basicEnchants = new ItemStack(Material.BOOK);
-        ItemStack enhancedEnchants = new ItemStack(Material.BOOK);
-        ItemStack refinedEnchants = new ItemStack(Material.BOOK);
-        ItemStack eliteEnchants = new ItemStack(Material.BOOK);
-        ItemStack mythicEnchants = new ItemStack(Material.BOOK);
-        ItemStack pluginItems = new ItemStack(Material.BEACON);
-        ItemStack effortsMenu = new ItemStack(Material.EMERALD);
-        ItemStack enchantedCrate = new ItemStack(Material.PINK_SHULKER_BOX);
-        ItemStack recipesMenu = new ItemStack(Material.CRAFTING_TABLE);
-
-        ItemMeta exitMeta = exit.getItemMeta();
-        ItemMeta resourcesTabMeta = resourcesMenu.getItemMeta();
-        ItemMeta basicEnchantsMeta = basicEnchants.getItemMeta();
-        ItemMeta enhancedEnchantsMeta = enhancedEnchants.getItemMeta();
-        ItemMeta refinedEnchantsMeta = refinedEnchants.getItemMeta();
-        ItemMeta eliteEnchantsMeta = eliteEnchants.getItemMeta();
-        ItemMeta mythicEnchantsMeta = mythicEnchants.getItemMeta();
-        ItemMeta pluginItemsMeta = pluginItems.getItemMeta();
-        ItemMeta enchantedCrateMeta = enchantedCrate.getItemMeta();
-        ItemMeta effortsMenuMeta = effortsMenu.getItemMeta();
-        ItemMeta recipesMenuMeta = recipesMenu.getItemMeta();
-
-        basicEnchantsMeta.displayName(MiniMessage.miniMessage().deserialize("<reset><!i>Basic Enchantments"));
-        basicEnchantsMeta.lore(List.of(
-                Component.empty(),
-                MiniMessage.miniMessage().deserialize("<!i><yellow>Left Click To Inspect"),
-                MiniMessage.miniMessage().deserialize("<!i><green>Right Click To Roll"),
-                Component.empty(),
-                MiniMessage.miniMessage().deserialize("<!i>" + Gradient.RED + BookTiers.BASIC.getPrice() + " Mystic Coins")
-        ));
-        basicEnchants.setItemMeta(basicEnchantsMeta);
-
-        resourcesTabMeta.displayName(MiniMessage.miniMessage().deserialize("<!i><gold>Mystic Resources Menu"));
-        resourcesTabMeta.lore(List.of(
-                Component.empty(),
-                MiniMessage.miniMessage().deserialize("<!i><dark_purple>Opens the Resources Menu")
-        ));
-        resourcesMenu.setItemMeta(resourcesTabMeta);
-
-        enhancedEnchantsMeta.displayName(MiniMessage.miniMessage().deserialize("<!i><green>Enhanced Enchantments"));
-        enhancedEnchantsMeta.lore(List.of(
-                Component.empty(),
-                MiniMessage.miniMessage().deserialize("<!i><yellow>Left Click To Inspect"),
-                MiniMessage.miniMessage().deserialize("<!i><green>Right Click To Roll"),
-                Component.empty(),
-                MiniMessage.miniMessage().deserialize("<!i>" + Gradient.RED + BookTiers.ENHANCED.getPrice() + " Mystic Coins")
-        ));
-        enhancedEnchants.setItemMeta(enhancedEnchantsMeta);
-
-        refinedEnchantsMeta.displayName(MiniMessage.miniMessage().deserialize("<!i><aqua>Refined Enchantments"));
-        refinedEnchantsMeta.lore(List.of(
-                Component.empty(),
-                MiniMessage.miniMessage().deserialize("<!i><yellow>Left Click To Inspect"),
-                MiniMessage.miniMessage().deserialize("<!i><green>Right Click To Roll"),
-                Component.empty(),
-                MiniMessage.miniMessage().deserialize("<!i>" + Gradient.RED + BookTiers.REFINED.getPrice() + " Mystic Coins")
-        ));
-        refinedEnchants.setItemMeta(refinedEnchantsMeta);
-
-        eliteEnchantsMeta.displayName(MiniMessage.miniMessage().deserialize("<!i><#FF55FF>Elite Enchantments"));
-        eliteEnchantsMeta.lore(List.of(
-                Component.empty(),
-                MiniMessage.miniMessage().deserialize("<!i><yellow>Left Click To Inspect"),
-                MiniMessage.miniMessage().deserialize("<!i><green>Right Click To Roll"),
-                Component.empty(),
-                MiniMessage.miniMessage().deserialize("<!i>" + Gradient.RED + BookTiers.ELITE.getPrice() + " Mystic Coins")
-        ));
-        eliteEnchants.setItemMeta(eliteEnchantsMeta);
-
-        MiniMessage mm = MiniMessage.miniMessage();
-        enchantedCrateMeta.displayName(mm.deserialize(
-                "<gradient:#D08CFF:#FF55FF><!i>✧ Enchanted Crate ✧</gradient>"
-        ));
-        enchantedCrateMeta.lore(List.of(
-                mm.deserialize("<#B388FF><!i>Mystic Enchantments Crate</#B388FF>"),
-                Component.empty(),
-                mm.deserialize("<#FFACFC><!i>⟡ Left Click</#FFACFC> <#FFFFFF><!i>to inspect crate contents</#FFFFFF>"),
-                mm.deserialize("<#FFACFC><!i>⟡ Right Click</#FFACFC> <#FFFFFF><!i>to open with a key</#FFFFFF>"),
-                Component.empty(),
-                mm.deserialize("<#80D8FF><!i>You have <#FFEE58>" + EnchantedCrateUtils.getKey(player) + "</#FFEE58><!i> Enchanted Crate Keys</#80D8FF>")
-        ));
-        enchantedCrate.setItemMeta(enchantedCrateMeta);
-
-        mythicEnchantsMeta.displayName(MiniMessage.miniMessage().deserialize("<!i><#FF3030>Mythic Enchantments"));
-        mythicEnchantsMeta.lore(List.of(
-                Component.empty(),
-                MiniMessage.miniMessage().deserialize("<!i><#FFD700>Left Click To Inspect"),
-                MiniMessage.miniMessage().deserialize("<!i><#00FF7F>Right Click To Roll"),
-                Component.empty(),
-                MiniMessage.miniMessage().deserialize("<!i>" + Gradient.RED + BookTiers.MYTHIC.getPrice() + " Mystic Coins")
-        ));
-        mythicEnchants.setItemMeta(mythicEnchantsMeta);
-
-        effortsMenuMeta.displayName(MiniMessage.miniMessage().deserialize("<!i>" + Gradient.BLUE + "Mystic Coins Giver"));
-        effortsMenuMeta.lore(List.of(
-                Component.empty(),
-                MiniMessage.miniMessage().deserialize("<!i>" + Gradient.YELLOW + "♦ Mystic Coins Menu"),
-                MiniMessage.miniMessage().deserialize("<!i>" + Gradient.YELLOW + "♦ Get Mystic Coins With Effort Points")
-        ));
-        effortsMenu.setItemMeta(effortsMenuMeta);
-
-        pluginItemsMeta.displayName(MiniMessage.miniMessage().deserialize("<!i><bold><gold>Mystic Options"));
-        pluginItemsMeta.lore(List.of(
-                Component.empty(),
-                MiniMessage.miniMessage().deserialize("<!i><gray>Mystic Enchantments Options"),
-                MiniMessage.miniMessage().deserialize("<!i><green>Click To Open")
-        ));
-        pluginItems.setItemMeta(pluginItemsMeta);
-
-        recipesMenu.setItemMeta(recipesMenuMeta);
-        recipesMenuMeta.displayName(MiniMessage.miniMessage().deserialize("<!i>" + Gradient.YELLOW + "Mystic Recipes"));
-        recipesMenuMeta.lore(List.of(
-                Component.empty(),
-                MiniMessage.miniMessage().deserialize("<!i><yellow>You can craft special Mystic Items Here"),
-                MiniMessage.miniMessage().deserialize("<!i><green>Click to Open")
-        ));
-        recipesMenu.setItemMeta(recipesMenuMeta);
-
-        resourcesTabMeta.displayName(MiniMessage.miniMessage().deserialize("<!i><bold><gold>Mystic Resources"));
-        resourcesTabMeta.lore(List.of(
-                Component.empty(),
-                MiniMessage.miniMessage().deserialize("<!i><gray>Mystic Enchantments Resources"),
-                MiniMessage.miniMessage().deserialize("<!i><green>Click To Open")
-        ));
-        resourcesMenu.setItemMeta(resourcesTabMeta);
-
-        exitMeta.displayName(MiniMessage.miniMessage().deserialize("<!i><gray>Exit"));
-        exit.setItemMeta(exitMeta);
-
-        ItemDataUtils.addData(exit, "exit");
-        ItemDataUtils.addData(basicEnchants, "basic_tab");
-        ItemDataUtils.addData(enhancedEnchants, "enhanced_tab");
-        ItemDataUtils.addData(refinedEnchants, "refined_tab");
-        ItemDataUtils.addData(eliteEnchants, "elite_tab");
-        ItemDataUtils.addData(mythicEnchants, "mythic_tab");
-        ItemDataUtils.addData(pluginItems, "options_tab");
-        ItemDataUtils.addData(resourcesMenu, "resources_tab");
-        ItemDataUtils.addData(enchantedCrate, "enchanted_crate");
-        ItemDataUtils.addData(effortsMenu, "efforts_tab");
-        ItemDataUtils.addData(recipesMenu, "recipes_menu");
-
-        inventory.setItem(20, basicEnchants);
-        inventory.setItem(21, enhancedEnchants);
-        inventory.setItem(22, refinedEnchants);
-        inventory.setItem(31, enchantedCrate);
-        inventory.setItem(13, effortsMenu);
-        inventory.setItem(23, eliteEnchants);
-        inventory.setItem(24, mythicEnchants);
-        inventory.setItem(inventory.getSize() - 7, recipesMenu);
-        inventory.setItem(inventory.getSize() - 5, createViewer(player));
-        inventory.setItem(inventory.getSize() - 1, exit);
-        inventory.setItem(inventory.getSize() - 9, pluginItems);
-        inventory.setItem(inventory.getSize() - 8, resourcesMenu);
-
-        return inventory;
-    }
     public static Inventory getMainGui() {
-        String name = "<!i><light_purple>Mystic Enchanter";
         Inventory inventory = Bukkit.createInventory(null, 54);
 
         ItemStack exit = new ItemStack(Material.BARRIER);
         ItemStack resourcesMenu = new ItemStack(Material.AMETHYST_BLOCK);
-        ItemStack basicEnchants = new ItemStack(Material.BOOK);
-        ItemStack enhancedEnchants = new ItemStack(Material.BOOK);
-        ItemStack refinedEnchants = new ItemStack(Material.BOOK);
-        ItemStack eliteEnchants = new ItemStack(Material.BOOK);
-        ItemStack mythicEnchants = new ItemStack(Material.BOOK);
         ItemStack pluginItems = new ItemStack(Material.BEACON);
         ItemStack effortsMenu = new ItemStack(Material.EMERALD);
         ItemStack recipesMenu = new ItemStack(Material.CRAFTING_TABLE);
 
         ItemMeta exitMeta = exit.getItemMeta();
         ItemMeta resourcesTabMeta = resourcesMenu.getItemMeta();
-        ItemMeta basicEnchantsMeta = basicEnchants.getItemMeta();
-        ItemMeta enhancedEnchantsMeta = enhancedEnchants.getItemMeta();
-        ItemMeta refinedEnchantsMeta = refinedEnchants.getItemMeta();
-        ItemMeta eliteEnchantsMeta = eliteEnchants.getItemMeta();
-        ItemMeta mythicEnchantsMeta = mythicEnchants.getItemMeta();
         ItemMeta pluginItemsMeta = pluginItems.getItemMeta();
         ItemMeta effortsMenuMeta = effortsMenu.getItemMeta();
         ItemMeta recipesMenuMeta = recipesMenu.getItemMeta();
-
-        basicEnchantsMeta.displayName(MiniMessage.miniMessage().deserialize("<reset><!i>Basic Enchantments"));
-        basicEnchantsMeta.lore(List.of(
-                Component.empty(),
-                MiniMessage.miniMessage().deserialize("<!i><yellow>Left Click To Inspect"),
-                MiniMessage.miniMessage().deserialize("<!i><green>Right Click To Roll"),
-                Component.empty(),
-                MiniMessage.miniMessage().deserialize("<!i>" + Gradient.RED + BookTiers.BASIC.getPrice() + " Mystic Coins")
-        ));
-        basicEnchants.setItemMeta(basicEnchantsMeta);
 
         resourcesTabMeta.displayName(MiniMessage.miniMessage().deserialize("<!i><gold>Mystic Resources Menu"));
         resourcesTabMeta.lore(List.of(
@@ -579,48 +132,6 @@ public class GuiHelper {
                 MiniMessage.miniMessage().deserialize("<!i><dark_purple>Opens the Resources Menu")
         ));
         resourcesMenu.setItemMeta(resourcesTabMeta);
-
-        enhancedEnchantsMeta.displayName(MiniMessage.miniMessage().deserialize("<!i><green>Enhanced Enchantments"));
-        enhancedEnchantsMeta.lore(List.of(
-                Component.empty(),
-                MiniMessage.miniMessage().deserialize("<!i><yellow>Left Click To Inspect"),
-                MiniMessage.miniMessage().deserialize("<!i><green>Right Click To Roll"),
-                Component.empty(),
-                MiniMessage.miniMessage().deserialize("<!i>" + Gradient.RED + BookTiers.ENHANCED.getPrice() + " Mystic Coins")
-        ));
-        enhancedEnchants.setItemMeta(enhancedEnchantsMeta);
-
-        refinedEnchantsMeta.displayName(MiniMessage.miniMessage().deserialize("<!i><aqua>Refined Enchantments"));
-        refinedEnchantsMeta.lore(List.of(
-                Component.empty(),
-                MiniMessage.miniMessage().deserialize("<!i><yellow>Left Click To Inspect"),
-                MiniMessage.miniMessage().deserialize("<!i><green>Right Click To Roll"),
-                Component.empty(),
-                MiniMessage.miniMessage().deserialize("<!i>" + Gradient.RED + BookTiers.REFINED.getPrice() + " Mystic Coins")
-        ));
-        refinedEnchants.setItemMeta(refinedEnchantsMeta);
-
-        eliteEnchantsMeta.displayName(MiniMessage.miniMessage().deserialize("<!i><#FF55FF>Elite Enchantments"));
-        eliteEnchantsMeta.lore(List.of(
-                Component.empty(),
-                MiniMessage.miniMessage().deserialize("<!i><yellow>Left Click To Inspect"),
-                MiniMessage.miniMessage().deserialize("<!i><green>Right Click To Roll"),
-                Component.empty(),
-                MiniMessage.miniMessage().deserialize("<!i>" + Gradient.RED + BookTiers.ELITE.getPrice() + " Mystic Coins")
-        ));
-        eliteEnchants.setItemMeta(eliteEnchantsMeta);
-
-        MiniMessage mm = MiniMessage.miniMessage();
-
-        mythicEnchantsMeta.displayName(MiniMessage.miniMessage().deserialize("<!i><#FF3030>Mythic Enchantments"));
-        mythicEnchantsMeta.lore(List.of(
-                Component.empty(),
-                MiniMessage.miniMessage().deserialize("<!i><#FFD700>Left Click To Inspect"),
-                MiniMessage.miniMessage().deserialize("<!i><#00FF7F>Right Click To Roll"),
-                Component.empty(),
-                MiniMessage.miniMessage().deserialize("<!i>" + Gradient.RED + BookTiers.MYTHIC.getPrice() + " Mystic Coins")
-        ));
-        mythicEnchants.setItemMeta(mythicEnchantsMeta);
 
         effortsMenuMeta.displayName(MiniMessage.miniMessage().deserialize("<!i>" + Gradient.BLUE + "Mystic Coins Giver"));
         effortsMenuMeta.lore(List.of(
@@ -659,21 +170,16 @@ public class GuiHelper {
         exit.setItemMeta(exitMeta);
 
         ItemDataUtils.addData(exit, "exit");
-        ItemDataUtils.addData(basicEnchants, "basic_tab");
-        ItemDataUtils.addData(enhancedEnchants, "enhanced_tab");
-        ItemDataUtils.addData(refinedEnchants, "refined_tab");
-        ItemDataUtils.addData(eliteEnchants, "elite_tab");
-        ItemDataUtils.addData(mythicEnchants, "mythic_tab");
         ItemDataUtils.addData(pluginItems, "options_tab");
         ItemDataUtils.addData(resourcesMenu, "resources_tab");
         ItemDataUtils.addData(effortsMenu, "efforts_tab");
         ItemDataUtils.addData(recipesMenu, "recipes_menu");
 
-        if (ConfigSettings.BASIC_ENCHANTMENTS_ACCESS.getValue()) inventory.setItem(20, basicEnchants);
-        if (ConfigSettings.ENHANCED_ENCHANTMENTS_ACCESS.getValue()) inventory.setItem(21, enhancedEnchants);
-        if (ConfigSettings.REFINED_ENCHANTMENTS_ACCESS.getValue()) inventory.setItem(22, refinedEnchants);
-        if (ConfigSettings.ELITE_ENCHANTMENTS_ACCESS.getValue()) inventory.setItem(23, eliteEnchants);
-        if (ConfigSettings.MYTHIC_ENCHANTMENTS_ACCESS.getValue()) inventory.setItem(24, mythicEnchants);
+        if (ConfigSettings.BASIC_ENCHANTMENTS_ACCESS.getValue()) inventory.setItem(20, BASIC_ENCHANTS.clone());
+        if (ConfigSettings.ENHANCED_ENCHANTMENTS_ACCESS.getValue()) inventory.setItem(21, ENHANCED_ENCHANTS.clone());
+        if (ConfigSettings.REFINED_ENCHANTMENTS_ACCESS.getValue()) inventory.setItem(22, REFINED_ENCHANTS.clone());
+        if (ConfigSettings.ELITE_ENCHANTMENTS_ACCESS.getValue()) inventory.setItem(23, ELITE_ENCHANTS.clone());
+        if (ConfigSettings.MYTHIC_ENCHANTMENTS_ACCESS.getValue()) inventory.setItem(24, MYTHIC_ENCHANTS.clone());
 
         inventory.setItem(13, effortsMenu);
         if (ConfigSettings.ENABLE_MYSTIC_RECIPES.getValue()) inventory.setItem(inventory.getSize() - 7, recipesMenu);
@@ -688,50 +194,6 @@ public class GuiHelper {
         return MysticRecipeUtils.getRecipes();
     }
 
-    public static Inventory getRecipesInventory(Player player) {
-        Inventory inventory = Bukkit.createInventory(null, 36, MiniMessage.miniMessage().deserialize(Gradient.AQUA + "Mystic Recipes"));
-        List<MysticRecipe> mysticRecipes = getMysticRecipes();
-        for (int i = 0; i < inventory.getSize() && i < mysticRecipes.size(); i++) {
-            inventory.setItem(i, mysticRecipes.get(i).getDisplayItem());
-        }
-        inventory.setItem(inventory.getSize() - 1, createBack());
-        inventory.setItem(inventory.getSize() - 5, createViewer(player));
-        return inventory;
-    }
-    public static Inventory getRecipesInventory() {
-        Inventory inventory = Bukkit.createInventory(null, 36);
-        List<MysticRecipe> mysticRecipes = getMysticRecipes();
-        for (int i = 0; i < inventory.getSize() && i < mysticRecipes.size(); i++) {
-            inventory.setItem(i, mysticRecipes.get(i).getDisplayItem());
-        }
-        inventory.setItem(inventory.getSize() - 1, createBack());
-
-        return inventory;
-    }
-
-    public static Inventory getEnchantedCrateGui(Player player) {
-        String guiTitle = "<gradient:#BA55D3:#FF6EC7><bold>\uD83C\uDF20    Enchanted Crate     \uD83C\uDF20</bold></gradient>";
-        Inventory inventory = Bukkit.createInventory(null, 36, MiniMessage.miniMessage().deserialize(guiTitle));
-        List<EnchantedItem> enchantedItems = Helper.getEnchantedItems();
-
-        for (int i = 0; i < enchantedItems.size() && i < inventory.getSize(); i++) inventory.setItem(i, enchantedItems.get(i).getDisplayedItem());
-
-        inventory.setItem(inventory.getSize() - 1, createBack());
-        inventory.setItem(inventory.getSize() - 5, createViewer(player));
-
-        return inventory;
-    }
-    public static Inventory getEnchantedCrateGui() {
-        Inventory inventory = Bukkit.createInventory(null, 36);
-        List<EnchantedItem> enchantedItems = Helper.getEnchantedItems();
-
-        for (int i = 0; i < enchantedItems.size() && i < inventory.getSize(); i++) inventory.setItem(i, enchantedItems.get(i).getDisplayedItem());
-
-        inventory.setItem(inventory.getSize() - 1, createBack());
-
-
-        return inventory;
-    }
     public static Inventory getResourcesGui(Player player) {
         String name = "<!i><light_purple>Mystic Enchanter - <reset><aqua>Resources";
         Inventory inventory = Bukkit.createInventory(null, 36, MiniMessage.miniMessage().deserialize(name));

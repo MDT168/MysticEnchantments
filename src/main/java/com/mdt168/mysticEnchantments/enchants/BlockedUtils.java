@@ -1,6 +1,7 @@
 package com.mdt168.mysticEnchantments.enchants;
 
 import com.mdt168.mysticEnchantments.config.ConfigSettings;
+import com.mdt168.mysticEnchantments.custom.PlayerDataUtils;
 
 import java.util.List;
 

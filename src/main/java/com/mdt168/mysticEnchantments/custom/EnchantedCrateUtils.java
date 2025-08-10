@@ -54,7 +54,7 @@ public class EnchantedCrateUtils {
      */
     public static void rollCrate(Player player) {
         if (getKey(player) > 0) {
-            EnchantedItem chosen = Helper.rollWeightedItem(Helper.getEnchantedItems());
+            EnchantedItem chosen = Helper.rollWeightedItem(EnchantedItem.getEnchantedItems());
             if (chosen == null) {
                 Helper.sendWarningMessage(player, "A problem has been detected, the weights of the items are 0 (The Item Chosen = null)");
                 return;
@@ -73,7 +73,7 @@ public class EnchantedCrateUtils {
      * @param player to roll the crate for
      */
     public static void freeRollCrate(Player player, CommandSender sender) {
-        EnchantedItem chosen = Helper.rollWeightedItem(Helper.getEnchantedItems());
+        EnchantedItem chosen = Helper.rollWeightedItem(EnchantedItem.getEnchantedItems());
         if (chosen == null) {
             Helper.sendWarningMessage(player, "A problem has been detected, the weights of the items are 0 (The Item Chosen = null)");
             return;

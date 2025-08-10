@@ -1,8 +1,11 @@
 package com.mdt168.mysticEnchantments.custom.dataUtils;
 
+import com.mdt168.mysticEnchantments.config.ConfigSettings;
 import com.mdt168.mysticEnchantments.craft.builders.ItemStackBuilder;
 import com.mdt168.mysticEnchantments.custom.*;
 import com.mdt168.mysticEnchantments.enchants.HumaneEnchantment;
+import com.mdt168.mysticEnchantments.enchants.MysticTickets;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -15,73 +18,61 @@ import java.util.List;
 
 public class Guis {
     private static final Inventory main = GuiHelper.getMainGui();
-    private static final Inventory basic = GuiHelper.getBasicGui();
-    private static final Inventory enhanced = GuiHelper.getEnhancedGui();
-    private static final Inventory refined = GuiHelper.getRefinedGui();
-    private static final Inventory elite = GuiHelper.getEliteGui();
-    private static final Inventory mythic = GuiHelper.getMythicGui();
-    private static final Inventory enchanted = GuiHelper.getEnchantedCrateGui();
-    private static final Inventory items = GuiHelper.getItemsGui();
-    private static Inventory recipes = GuiHelper.getRecipesInventory();
 
     public static Inventory getMainGui(Player player) {
         String name = "<!i><light_purple>Mystic Enchanter";
         Inventory inventory = Helper.cloneInventory(main, name);
 
-        ItemStack enchantedCrate = Helper.getCrate(player);
+        ItemStack basic = inventory.getItem(20);
+        ItemStack enhanced = inventory.getItem(21);
+        ItemStack refined = inventory.getItem(22);
+        ItemStack elite = inventory.getItem(23);
+        ItemStack mythic = inventory.getItem(24);
+
+        if (basic != null)
+            basic.editMeta(meta -> {
+                List<Component> lore = meta.lore();
+                lore = lore == null ? new ArrayList<>() : lore;
+                lore.add(GuiHelper.mm.deserialize(Gradient.GREEN + "<!i>You have <yellow>" + MysticTickets.BASIC_TICKETS.getTickets(player) + "</yellow> Basic Tickets"));
+                meta.lore(lore);
+            });
+
+        if (enhanced != null)
+            enhanced.editMeta(meta -> {
+                List<Component> lore = meta.lore();
+                lore = lore == null ? new ArrayList<>() : lore;
+                lore.add(GuiHelper.mm.deserialize(Gradient.GREEN + "<!i>You have <yellow>" + MysticTickets.ENHANCED_TICKETS.getTickets(player) + "</yellow> Enhanced Tickets"));
+                meta.lore(lore);
+            });
+
+        if (refined != null)
+            refined.editMeta(meta -> {
+                List<Component> lore = meta.lore();
+                lore = lore == null ? new ArrayList<>() : lore;
+                lore.add(GuiHelper.mm.deserialize(Gradient.GREEN + "<!i>You have <yellow>" + MysticTickets.REFINED_TICKETS.getTickets(player) + "</yellow> Refined Tickets"));
+                meta.lore(lore);
+            });
+
+        if (elite != null)
+            elite.editMeta(meta -> {
+                List<Component> lore = meta.lore();
+                lore = lore == null ? new ArrayList<>() : lore;
+                lore.add(GuiHelper.mm.deserialize(Gradient.GREEN + "<!i>You have <yellow>" + MysticTickets.ELITE_TICKETS.getTickets(player) + "</yellow> Elite Tickets"));
+                meta.lore(lore);
+            });
+
+        if (mythic != null)
+            mythic.editMeta(meta -> {
+                List<Component> lore = meta.lore();
+                lore = lore == null ? new ArrayList<>() : lore;
+                lore.add(GuiHelper.mm.deserialize(Gradient.GREEN + "<!i>You have <yellow>" + MysticTickets.MYTHIC_TICKETS.getTickets(player) + "</yellow> Mythic Tickets"));
+                meta.lore(lore);
+            });
+
+        Helper.updateCrate(player, inventory);
 
         inventory.setItem(inventory.getSize() - 5, GuiHelper.createViewer(player));
-        inventory.setItem(31, enchantedCrate);
-
         return inventory;
-    }
-
-    public static Inventory getBasicGui(Player player) {
-        String name = "<!i><light_purple>Mystic Enchanter - <green>Basic";
-        Inventory inventory = Helper.cloneInventory(basic, name);
-        Helper.updateViewer(player, inventory);
-        return inventory;
-    }
-    public static Inventory getEnhancedGui(Player player) {
-        String name = "<!i><light_purple>Mystic Enchanter - <green>Enhanced";
-        Inventory inventory = Helper.cloneInventory(enhanced, name);
-        Helper.updateViewer(player, inventory);
-        return inventory;
-    }
-    public static Inventory getRefinedGui(Player player) {
-        String name = "<!i><light_purple>Mystic Enchanter - <green>Refined";
-        Inventory inventory = Helper.cloneInventory(refined, name);
-        Helper.updateViewer(player, inventory);
-        return inventory;
-    }
-    public static Inventory getEliteGui(Player player) {
-        String name = "<!i><light_purple>Mystic Enchanter - <green>Elite";
-        Inventory inventory = Helper.cloneInventory(elite, name);
-        Helper.updateViewer(player, inventory);
-        return inventory;
-    }
-    public static Inventory getMythicGui(Player player) {
-        String name = "<!i><light_purple>Mystic Enchanter - <green>Mythic";
-        Inventory inventory = Helper.cloneInventory(mythic, name);
-        Helper.updateViewer(player, inventory);
-        return inventory;
-    }
-    public static Inventory getEnchantedCrateGui(Player player) {
-        String guiTitle = "<gradient:#BA55D3:#FF6EC7><bold>\uD83C\uDF20    Enchanted Crate     \uD83C\uDF20</bold></gradient>";
-        Inventory inventory = Helper.cloneInventory(enchanted, guiTitle);
-        Helper.updateViewer(player, inventory);
-        return inventory;
-    }
-    public static Inventory getItemsGui(Player player) {
-        String name = "<!i><light_purple>Mystic Enchanter - <reset><green>Items";
-        Inventory cloned = Helper.cloneInventory(items, name);
-        Helper.updateViewer(player, cloned);
-        return cloned;
-    }
-    public static Inventory getRecipesGui(Player player) {
-        Inventory cloned = Helper.cloneInventory(recipes, Gradient.AQUA + "Mystic Recipes");
-        Helper.updateViewer(player, cloned);
-        return cloned;
     }
 
     public static Inventory getHumaneEnchantsGui(Player player) {
@@ -100,9 +91,5 @@ public class Guis {
         inventory.setItem(inventory.getSize() - 5, GuiHelper.createViewer(player));
         inventory.setItem(inventory.getSize() - 1, GuiHelper.createBack());
         return inventory;
-    }
-
-    public static void updateRecipes() {
-        recipes = GuiHelper.getRecipesInventory();
     }
 }

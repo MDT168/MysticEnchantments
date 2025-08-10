@@ -2,6 +2,7 @@ package com.mdt168.mysticEnchantments;
 
 import com.destroystokyo.paper.event.player.PlayerArmorChangeEvent;
 import com.destroystokyo.paper.event.player.PlayerPickupExperienceEvent;
+import com.mdt168.mysticEnchantments.enchants.MysticTickets;
 import com.mdt168.mysticEnchantments.pages.PagedMysticRecipeGui;
 import com.mdt168.mysticEnchantments.craft.recipes.MysticRecipe;
 import com.mdt168.mysticEnchantments.custom.*;
@@ -501,27 +502,27 @@ public class MysticEvents implements Listener {
     }
 
     @EventHandler
-    public void itemConsumeEnchantmentEffects(PlayerItemConsumeEvent event) {
-        ItemStack item = event.getItem();
-        Player player = event.getPlayer();
+    public void onPotionEffect(EntityPotionEffectEvent event) {
+        if (event.getCause() == EntityPotionEffectEvent.Cause.POTION_DRINK) {
+            if (event.getAction() == EntityPotionEffectEvent.Action.ADDED ||
+                    event.getAction() == EntityPotionEffectEvent.Action.CHANGED) {
+                PotionEffect newEffect = event.getNewEffect();
+                if (newEffect != null) {
+                    int newDuration = (int) (newEffect.getDuration() * 1.1);
+                    event.setCancelled(true);
 
-        if (item.getType() == Material.POTION) {
-            if (PlayerDataUtils.checkIfDataExists(player, BREW_BOOST.getId())) {
-                PotionMeta meta = (PotionMeta) item.getItemMeta();
-
-                Collection<PotionEffect> effects = meta.getAllEffects();
-                event.setCancelled(true);
-
-                player.getInventory().setItemInMainHand(new ItemStack(Material.GLASS_BOTTLE));
-
-                for (PotionEffect effect : effects) {
-                    PotionEffectType type = effect.getType();
-                    int duration = (int) Math.round(effect.getDuration() * 1.1);
-                    int amplifier = effect.getAmplifier();
-
-                    player.addPotionEffect(new PotionEffect(type, duration, amplifier));
+                    if (!(event.getEntity() instanceof Player player)) return;
+                    player.addPotionEffect(
+                            new PotionEffect(
+                                    newEffect.getType(),
+                                    newDuration,
+                                    newEffect.getAmplifier(),
+                                    newEffect.isAmbient(),
+                                    newEffect.hasParticles(),
+                                    newEffect.hasIcon()
+                            )
+                    );
                 }
-                player.playSound(player.getLocation(), Sound.ENTITY_GENERIC_DRINK, 1.0f, 1.0f);
             }
         }
     }
@@ -1307,7 +1308,6 @@ public class MysticEvents implements Listener {
         }
     }
 
-
     @EventHandler
     public void onEntityHitEnchantmentsEffect(EntityDamageByEntityEvent event) {
         EnchantmentStack stormcaller = STORMCALLER;
@@ -1700,13 +1700,25 @@ public class MysticEvents implements Listener {
             if (click == ClickType.LEFT) {
                 player.openInventory(PagedGuis.BASIC.getPage(1, player));
             } else if (click == ClickType.RIGHT) {
-                Helper.rollBasicEnchantment(player);
+                MysticTickets.BASIC_TICKETS.rollTicket(player);
+                clickedItem.editMeta(meta -> {
+                    List<Component> lore = meta.lore();
+                    lore = lore == null ? new ArrayList<>() : lore;
+                    lore.set(lore.size() - 1, GuiHelper.mm.deserialize(Gradient.GREEN + "<!i>You have <yellow>" + MysticTickets.BASIC_TICKETS.getTickets(player) + "</yellow> Basic Tickets"));
+                    meta.lore(lore);
+                });
             }
         } else if (ItemDataUtils.hasData(clickedItem, "enhanced_tab")) {
             if (click == ClickType.LEFT) {
                 player.openInventory(PagedGuis.ENHANCED.getPage(1, player));
             } else if (click == ClickType.RIGHT) {
-                Helper.rollEnhancedEnchantment(player);
+                MysticTickets.ENHANCED_TICKETS.rollTicket(player);
+                clickedItem.editMeta(meta -> {
+                    List<Component> lore = meta.lore();
+                    lore = lore == null ? new ArrayList<>() : lore;
+                    lore.set(lore.size() - 1, GuiHelper.mm.deserialize(Gradient.GREEN + "<!i>You have <yellow>" + MysticTickets.ENHANCED_TICKETS.getTickets(player) + "</yellow> Enhanced Tickets"));
+                    meta.lore(lore);
+                });
             }
         } else if (ItemDataUtils.hasData(clickedItem, "recipes_menu"))
             player.openInventory(PagedGuis.RECIPE.getPage(1, player));
@@ -1715,24 +1727,43 @@ public class MysticEvents implements Listener {
             if (click == ClickType.LEFT) {
                 player.openInventory(PagedGuis.REFINED.getPage(1, player));
             } else if (click == ClickType.RIGHT) {
-                Helper.rollRefinedEnchantment(player);
+                MysticTickets.REFINED_TICKETS.rollTicket(player);
+                clickedItem.editMeta(meta -> {
+                    List<Component> lore = meta.lore();
+                    lore = lore == null ? new ArrayList<>() : lore;
+                    lore.set(lore.size() - 1, GuiHelper.mm.deserialize(Gradient.GREEN + "<!i>You have <yellow>" + MysticTickets.REFINED_TICKETS.getTickets(player) + "</yellow> Refined Tickets"));
+                    meta.lore(lore);
+                });
+
             }
         } else if (ItemDataUtils.hasData(clickedItem, "elite_tab")) {
             if (click == ClickType.LEFT) {
                 player.openInventory(PagedGuis.ELITE.getPage(1, player));
             } else if (click == ClickType.RIGHT) {
-                Helper.rollEliteEnchantment(player);
+                MysticTickets.ELITE_TICKETS.rollTicket(player);
+                clickedItem.editMeta(meta -> {
+                    List<Component> lore = meta.lore();
+                    lore = lore == null ? new ArrayList<>() : lore;
+                    lore.set(lore.size() - 1, GuiHelper.mm.deserialize(Gradient.GREEN + "<!i>You have <yellow>" + MysticTickets.ELITE_TICKETS.getTickets(player) + "</yellow> Elite Tickets"));
+                    meta.lore(lore);
+                });
             }
         } else if (ItemDataUtils.hasData(clickedItem, "mythic_tab")) {
             if (click == ClickType.LEFT) {
                 player.openInventory(PagedGuis.MYTHIC.getPage(1, player));
             } else if (click == ClickType.RIGHT) {
-                Helper.rollMythicEnchantment(player);
-                Helper.updateViewer(player, inventory);
+                MysticTickets.MYTHIC_TICKETS.rollTicket(player);
+                clickedItem.editMeta(meta -> {
+                    List<Component> lore = meta.lore();
+                    lore = lore == null ? new ArrayList<>() : lore;
+                    lore.set(lore.size() - 1, GuiHelper.mm.deserialize(Gradient.GREEN + "<!i>You have <yellow>" + MysticTickets.MYTHIC_TICKETS.getTickets(player) + "</yellow> Mythic Tickets"));
+                    meta.lore(lore);
+                });
+
             }
         } else if (ItemDataUtils.hasData(clickedItem, "enchanted_crate")) {
             if (click == ClickType.LEFT) {
-                humanEntity.openInventory(Guis.getEnchantedCrateGui(player));
+                player.openInventory(PagedGuis.CRATE.getPage(1, player));
             } else if (click == ClickType.RIGHT) {
                 EnchantedCrateUtils.rollCrate(player);
                 Helper.updateCrate(player, inventory);
@@ -1740,7 +1771,7 @@ public class MysticEvents implements Listener {
         } else if (ItemDataUtils.hasData(clickedItem, "exit")) humanEntity.closeInventory();
         else if (ItemDataUtils.hasData(clickedItem, "back")) humanEntity.openInventory(Guis.getMainGui(player));
         else if (ItemDataUtils.hasData(clickedItem, "options_tab"))
-            humanEntity.openInventory(Guis.getItemsGui(player));
+            player.openInventory(PagedGuis.OPTIONS.getPage(1, player));
 
         else if (ItemDataUtils.hasData(clickedItem, "resources_tab"))
             humanEntity.openInventory(GuiHelper.getResourcesGui(player));
@@ -1748,6 +1779,10 @@ public class MysticEvents implements Listener {
             humanEntity.openInventory(GuiHelper.getEffortsGui(player));
         else if (ItemDataUtils.hasData(clickedItem, "humane_viewer")) {
             player.openInventory(Guis.getHumaneEnchantsGui(player));
+        }
+        else if (ItemDataUtils.hasData(clickedItem, "addons")) {
+            Helper.sendMessage(player, "<click:open_url:'https://github.com/MDT168/MysticEnchantments/wiki/Add%E2%80%90ons-creation-setup'>" + Gradient.YELLOW + "Click here</gradient></click> to open the setup guide");
+            player.closeInventory();
         }
         else {
 

@@ -1,14 +1,13 @@
 package com.mdt168.mysticEnchantments.enchants;
 
+import com.mdt168.mysticEnchantments.MysticEnchantments;
+import com.mdt168.mysticEnchantments.config.ConfigSettings;
 import com.mdt168.mysticEnchantments.custom.BookTiers;
 import com.mdt168.mysticEnchantments.custom.ItemDataUtils;
 import com.mdt168.mysticEnchantments.custom.dataUtils.EnchantmentsUtils;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class HumaneEnchantment implements MysticEnchantmentComponent {
     private final String name, description, id;
@@ -16,9 +15,9 @@ public class HumaneEnchantment implements MysticEnchantmentComponent {
     private HumaneEnchantment[] conflictsWith;
     private final double chance;
 
-    private static final Map<String, HumaneEnchantment> enchants = new HashMap<>();
+    private static final Map<String, HumaneEnchantment> enchants = new LinkedHashMap<>();
 
-    private HumaneEnchantment(String name, String description, BookTiers bookTier) {
+    protected HumaneEnchantment(String name, String description, BookTiers bookTier) {
         this.name = name;
         this.description = description;
         this.bookTier = bookTier;
@@ -27,7 +26,7 @@ public class HumaneEnchantment implements MysticEnchantmentComponent {
         this.conflictsWith = new HumaneEnchantment[]{};
     }
 
-    private HumaneEnchantment(String name, String description, double chance, BookTiers bookTier) {
+    protected HumaneEnchantment(String name, String description, double chance, BookTiers bookTier) {
         this.name = name;
         this.description = description;
         this.bookTier = bookTier;
@@ -36,7 +35,7 @@ public class HumaneEnchantment implements MysticEnchantmentComponent {
         this.conflictsWith = new HumaneEnchantment[]{};
     }
 
-    private HumaneEnchantment(String name, String description, BookTiers bookTier, HumaneEnchantment[] conflictsWith) {
+    protected HumaneEnchantment(String name, String description, BookTiers bookTier, HumaneEnchantment[] conflictsWith) {
         this.name = name;
         this.description = description;
         this.bookTier = bookTier;
@@ -45,7 +44,7 @@ public class HumaneEnchantment implements MysticEnchantmentComponent {
         this.conflictsWith = conflictsWith;
     }
 
-    private HumaneEnchantment(String name, String description, double chance, BookTiers bookTier, HumaneEnchantment[] conflictsWith) {
+    protected HumaneEnchantment(String name, String description, double chance, BookTiers bookTier, HumaneEnchantment[] conflictsWith) {
         this.name = name;
         this.description = description;
         this.bookTier = bookTier;
@@ -90,6 +89,49 @@ public class HumaneEnchantment implements MysticEnchantmentComponent {
         if (!BlockedUtils.isBlocked(enchant)) {
             enchants.put(enchant.getId(), enchant);
             EnchantmentsUtils.addEnchantment(enchant);
+        }
+        return enchant;
+    }
+
+    public static HumaneEnchantment register(String name, String description, BookTiers bookTier, boolean skipOnApiMode) {
+        HumaneEnchantment enchant = new HumaneEnchantment(name, description, bookTier);
+        if (!BlockedUtils.isBlocked(enchant) && (!(ConfigSettings.API_MODE.getValue() && skipOnApiMode))) {
+
+            enchants.put(enchant.getId(), enchant);
+            EnchantmentsUtils.addEnchantment(enchant);
+        }
+        return enchant;
+    }
+
+    public static HumaneEnchantment register(String name, String description, double chance, BookTiers bookTier, boolean skipOnApiMode) {
+        HumaneEnchantment enchant = new HumaneEnchantment(name, description, chance, bookTier);
+        if (!BlockedUtils.isBlocked(enchant)) {
+            if ((!(ConfigSettings.API_MODE.getValue() && skipOnApiMode))) {
+                enchants.put(enchant.getId(), enchant);
+                EnchantmentsUtils.addEnchantment(enchant);
+            } else MysticEnchantments.blockedContentFromApiMode++;
+        }
+        return enchant;
+    }
+
+    public static HumaneEnchantment register(String name, String description, BookTiers bookTier, HumaneEnchantment[] conflictsWith, boolean skipOnApiMode) {
+        HumaneEnchantment enchant = new HumaneEnchantment(name, description, bookTier, conflictsWith);
+        if (!BlockedUtils.isBlocked(enchant)) {
+            if ((!(ConfigSettings.API_MODE.getValue() && skipOnApiMode))) {
+                enchants.put(enchant.getId(), enchant);
+                EnchantmentsUtils.addEnchantment(enchant);
+            } else MysticEnchantments.blockedContentFromApiMode++;
+        }
+        return enchant;
+    }
+
+    public static HumaneEnchantment register(String name, String description, double chance, BookTiers bookTier, HumaneEnchantment[] conflictsWith, boolean skipOnApiMode) {
+        HumaneEnchantment enchant = new HumaneEnchantment(name, description, chance, bookTier, conflictsWith);
+        if (!BlockedUtils.isBlocked(enchant)) {
+            if ((!(ConfigSettings.API_MODE.getValue() && skipOnApiMode))) {
+                enchants.put(enchant.getId(), enchant);
+                EnchantmentsUtils.addEnchantment(enchant);
+            } else MysticEnchantments.blockedContentFromApiMode++;
         }
         return enchant;
     }

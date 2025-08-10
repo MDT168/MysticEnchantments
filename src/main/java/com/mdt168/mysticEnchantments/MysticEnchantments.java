@@ -1,14 +1,13 @@
 package com.mdt168.mysticEnchantments;
 
-import com.mdt168.mysticEnchantments.command.HumaneEnchantCommand;
-import com.mdt168.mysticEnchantments.command.MysticEnchanterCommand;
-import com.mdt168.mysticEnchantments.command.MysticGuideCommand;
-import com.mdt168.mysticEnchantments.command.MysticSettingsCommand;
+import com.mdt168.mysticEnchantments.command.*;
 import com.mdt168.mysticEnchantments.config.Config;
 import com.mdt168.mysticEnchantments.config.ConfigSettings;
 import com.mdt168.mysticEnchantments.craft.MysticRecipes;
 import com.mdt168.mysticEnchantments.custom.*;
 import com.mdt168.mysticEnchantments.custom.pluginoptions.MysticOptions;
+import com.mdt168.mysticEnchantments.enchants.EnchantmentStack;
+import com.mdt168.mysticEnchantments.enchants.HumaneEnchantment;
 import com.mdt168.mysticEnchantments.enchants.MysticEnchants;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import io.papermc.paper.command.brigadier.BasicCommand;
@@ -32,6 +31,8 @@ public final class MysticEnchantments extends JavaPlugin {
     private static MysticEnchantments instance;
     private static Server server;
 
+    public static int blockedContentFromApiMode = 0;
+
     @Override
     @SuppressWarnings("UnstableApiUsage")
     public void onEnable() {
@@ -40,6 +41,9 @@ public final class MysticEnchantments extends JavaPlugin {
         BasicCommand basicMysticEnchanter = new MysticEnchanterCommand();
         BasicCommand basicMysticSettings = new MysticSettingsCommand();
 
+        if (ConfigSettings.API_MODE.getValue())
+            getLogger().warning(blockedContentFromApiMode + " Registrations have been blocked from 'api-mode' in the config.yml");
+
 
         LiteralCommandNode<CommandSourceStack> resourceGiverCommand = Helper.getMysticResourcesGiverCommand();
         getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, event -> {
@@ -47,6 +51,7 @@ public final class MysticEnchantments extends JavaPlugin {
             registrar.register(resourceGiverCommand);
             registrar.register(Helper.getEnchantedCrateCommand());
 
+            registrar.register(MysticTicketsCommand.build());
             registrar.register("mysticenchanter", basicMysticEnchanter);
             registrar.register("myse", basicMysticEnchanter);
             registrar.register("mysticguide", new MysticGuideCommand());
@@ -88,6 +93,7 @@ public final class MysticEnchantments extends JavaPlugin {
     @Override
     public void onLoad() {
         instance = this;
+        EnchantedCrateItems.init();
         ConfigSettings.init();
         Config.init(getDataFolder(), "config.yml");
         MysticRecipes.init();

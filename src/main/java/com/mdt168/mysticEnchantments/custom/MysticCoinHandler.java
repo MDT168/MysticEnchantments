@@ -13,6 +13,8 @@ import org.bukkit.inventory.ItemRarity;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 
+import java.util.Objects;
+
 public class MysticCoinHandler {
     private static final Plugin plugin = MysticEnchantments.getInstance();
     private static final NamespacedKey minCoinsEffort = new NamespacedKey(plugin, "min_coins_effort");
@@ -145,7 +147,7 @@ public class MysticCoinHandler {
         if (Helper.enchantmentExists(player, MysticEnchants.ENHANCED_EXPERIENCER)) base *= Helper.getEnchantmentLevel(player, MysticEnchants.ENHANCED_EXPERIENCER) * 0.15 + 1;
         if (Helper.enchantmentExists(player, MysticEnchants.REFINED_EXPERIENCER)) base *= Helper.getEnchantmentLevel(player, MysticEnchants.REFINED_EXPERIENCER) * 0.2 + 1;
         if (Helper.enchantmentExists(player, MysticEnchants.ELITE_EXPERIENCER)) base *= Helper.getEnchantmentLevel(player, MysticEnchants.ELITE_EXPERIENCER) * 0.35 + 1;
-        if (Helper.enchantmentExists(player, MysticEnchants.MYTHIC_PROSPECTOR)) base *= Helper.getEnchantmentLevel(player, MysticEnchants.MYTHIC_PROSPECTOR) * 0.4 + 1;
+        if (Helper.enchantmentExists(player, MysticEnchants.MYTHIC_EXPERIENCER)) base *= Helper.getEnchantmentLevel(player, MysticEnchants.MYTHIC_PROSPECTOR) * 0.4 + 1;
         if (PlayerCooldowns.POTION_OF_ENLIGHTENED_EFFORTS.isOnCooldown(player)) base *= 1.5;
         return Helper.round(damage * base, 2);
     }
@@ -157,7 +159,7 @@ public class MysticCoinHandler {
         if (Helper.enchantmentExists(player, MysticEnchants.ELITE_PROSPECTOR)) base *= Helper.getEnchantmentLevel(player, MysticEnchants.ELITE_PROSPECTOR) * 0.35 + 1;
         if (Helper.enchantmentExists(player, MysticEnchants.MYTHIC_PROSPECTOR)) base *= Helper.getEnchantmentLevel(player, MysticEnchants.MYTHIC_PROSPECTOR) * 0.45 + 1;
         if (PlayerCooldowns.POTION_OF_ENLIGHTENED_EFFORTS.isOnCooldown(player)) base *= 1.5;
-        ItemRarity rarity = block.getType().asItemType().getItemRarity();
+        ItemRarity rarity = Objects.requireNonNull(block.getType().asItemType()).getItemRarity();
         float hardness = block.getType().getHardness();
         if (rarity == null) rarity = ItemRarity.COMMON;
 

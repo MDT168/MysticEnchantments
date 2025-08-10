@@ -1,9 +1,13 @@
 package com.mdt168.mysticEnchantments.custom.pluginoptions;
 
+import com.mdt168.mysticEnchantments.MysticEnchantments;
 import com.mdt168.mysticEnchantments.config.ConfigSettings;
 import com.mdt168.mysticEnchantments.custom.Helper;
 import com.mdt168.mysticEnchantments.custom.PlayerDataUtils;
+import com.mdt168.mysticEnchantments.enchants.EnchantmentStack;
 import com.mdt168.mysticEnchantments.enchants.HumaneEnchantment;
+import com.mdt168.mysticEnchantments.enchants.MysticEnchants;
+import com.mdt168.mysticEnchantments.enchants.MysticTickets;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -31,16 +35,71 @@ public class MysticOptions {
                     }
                 }
                 return removed != 0;
-            }
+            },
+            true
     );
     public static final MysticOption ANVIL_GUI = MysticOption.register(
             "Anvil",
             "Easier way to get an anvil for enchantments",
             ConfigSettings.ANVIL_PRICE,
             Material.ANVIL,
+            player -> Helper.safeGiveItem(player, new ItemStack(Material.ANVIL)),
+            true
+    );
+    public static final MysticOption BASIC_TICKETS = MysticOption.register(
+            "Basic Enchantments Ticket",
+            "A Ticket to give a random Basic Tier Enchantment",
+            ConfigSettings.BASIC_ENCHANTMENTS_PRICE,
+            Material.PAPER,
             player -> {
-                return Helper.safeGiveItem(player, new ItemStack(Material.ANVIL));
-            }
+                MysticTickets.BASIC_TICKETS.addTickets(player, 1);
+                return true;
+            },
+            true
+    );
+    public static final MysticOption ENHANCED_TICKETS = MysticOption.register(
+            "Enhanced Enchantments Ticket",
+            "A Ticket to give a random Basic Tier Enchantment",
+            ConfigSettings.ENHANCED_ENCHANTMENTS_PRICE,
+            Material.PAPER,
+            player -> {
+                MysticTickets.ENHANCED_TICKETS.addTickets(player, 1);
+                return true;
+            },
+            true
+    );
+    public static final MysticOption REFINED_TICKETS = MysticOption.register(
+            "Refined Enchantments Ticket",
+            "A Ticket to give a random Basic Tier Enchantment",
+            ConfigSettings.REFINED_ENCHANTMENTS_PRICE,
+            Material.PAPER,
+            player -> {
+                MysticTickets.REFINED_TICKETS.addTickets(player, 1);
+                return true;
+            },
+            true
+    );
+    public static final MysticOption ELITE_TICKETS = MysticOption.register(
+            "Elite Enchantments Ticket",
+            "A Ticket to give a random Basic Tier Enchantment",
+            ConfigSettings.ELITE_ENCHANTMENTS_PRICE,
+            Material.PAPER,
+            player -> {
+                MysticTickets.ELITE_TICKETS.addTickets(player, 1);
+                return true;
+            },
+            true
+    );
+    public static final MysticOption MYTHIC_TICKETS = MysticOption.register(
+            "Mythic Enchantments Ticket",
+            "A Ticket to give a random Basic Tier Enchantment",
+            ConfigSettings.MYTHIC_ENCHANTMENTS_PRICE,
+            Material.PAPER,
+            player -> {
+                MysticTickets.MYTHIC_TICKETS.addTickets(player, 1);
+                return true;
+            },
+            true
     );
 
     public static void init() {}

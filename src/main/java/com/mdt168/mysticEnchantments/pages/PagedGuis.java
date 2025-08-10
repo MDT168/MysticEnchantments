@@ -9,4 +9,6 @@ public class PagedGuis {
     public static final PagedEnchantmentsGui ELITE = PagedEnchantmentsGui.register(BookTiers.ELITE);
     public static final PagedEnchantmentsGui MYTHIC = PagedEnchantmentsGui.register(BookTiers.MYTHIC);
     public static final PagedMysticRecipeGui RECIPE = new PagedMysticRecipeGui();
+    public static final PagedMysticOptionsGui OPTIONS = new PagedMysticOptionsGui();
+    public static final PagedEnchantedCrateGui CRATE = new PagedEnchantedCrateGui();
 }

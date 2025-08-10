@@ -1,7 +1,7 @@
 package com.mdt168.mysticEnchantments.custom;
 
 public enum Gradient {
-    RED("#BE2121:#FF7797"),
+    RED("#DD0000:#FF0000"),
     YELLOW("#FFE259:#FFA751"),
     AQUA("#21B6BE:#77BCFF"),
     BLUE("#54daf4:#545eb6"),

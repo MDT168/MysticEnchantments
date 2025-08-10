@@ -23,7 +23,8 @@ public class MysticRecipes {
                     new ItemStack(Material.DIAMOND, 32),
                     new ItemStack(Material.LAPIS_BLOCK, 16),
                     new ItemStack(Material.BOOK, 1)
-            )
+            ),
+            true
     );
     public static final MysticRecipe ENCHANTMENT_EXTRACTOR_RECIPE = MysticRecipe.register(
             "Enchantment Extractor",
@@ -35,7 +36,8 @@ public class MysticRecipes {
                     new ItemStack(Material.GOLD_BLOCK, 8),
                     new ItemStack(Material.LAPIS_BLOCK, 10),
                     new ItemStack(Material.ECHO_SHARD, 2)
-            )
+            ),
+            true
     );
     public static final MysticRecipe MYSTICAL_ENCHANTMENTS_BAG_RECIPE = MysticRecipe.register(
             "Mystical Enchantments Bag",
@@ -47,7 +49,8 @@ public class MysticRecipes {
                     new ItemStack(Material.LEATHER, 32),
                     new ItemStack(Material.BOOK, 8),
                     new ItemStack(Material.CHEST, 2)
-            )
+            ),
+            true
     );
     public static final MysticRecipe FARMER_SATCHEL_RECIPE = MysticRecipe.register(
             "Farmer's Satchel",
@@ -59,7 +62,8 @@ public class MysticRecipes {
                     new ItemStack(Material.LEATHER, 32),
                     new ItemStack(Material.WHEAT, 32),
                     new ItemStack(Material.CHEST, 2)
-            )
+            ),
+            true
     );
     public static final MysticRecipe POTION_OF_ENLIGHTENED_EFFORT_RECIPE = MysticRecipe.register(
             "Potion of Enlightened Effort",
@@ -72,7 +76,8 @@ public class MysticRecipes {
                     new ItemStack(Material.OAK_LOG, 96),
                     new ItemStack(Material.COBBLESTONE, 64),
                     new ItemStack(Material.RAW_IRON, 10)
-            )
+            ),
+            true
     );
     public static final MysticRecipe PORTABLE_REPAIRER_RECIPE = MysticRecipe.register(
             "Portable Repairer",
@@ -85,7 +90,8 @@ public class MysticRecipes {
                     new ItemStack(Material.DIAMOND, 3),
                     new ItemStack(Material.OAK_LOG, 32),
                     new ItemStack(Material.AMETHYST_SHARD, 7)
-            )
+            ),
+            true
     );
     public static final MysticRecipe TOME_OF_MYSTICAL_LEVELING = MysticRecipe.register(
             "Tome Of Mystical Leveling",
@@ -100,7 +106,8 @@ public class MysticRecipes {
                     new ItemStack(Material.NETHERRACK, 16),
                     new ItemStack(Material.END_STONE, 16),
                     new ItemStack(Material.ECHO_SHARD, 1)
-            )
+            ),
+            true
     );
     public static final MysticRecipe SCROLL_OF_PRESERVATION_RECIPE = MysticRecipe.register(
             "Scroll of Preservation",
@@ -113,7 +120,8 @@ public class MysticRecipes {
                     new ItemStack(Material.DIAMOND, 8),
                     new ItemStack(Material.AMETHYST_SHARD, 8),
                     new ItemStack(Material.IRON_INGOT, 24)
-            )
+            ),
+            true
     );
     public static final MysticRecipe TIER_I_ENCHANTMENTS_BOX_RECIPE = MysticRecipe.register(
             "Tier I Enchantments Box",
@@ -126,7 +134,8 @@ public class MysticRecipes {
                     new ItemStack(Material.COPPER_INGOT, 32),
                     new ItemStack(Material.AMETHYST_SHARD, 3),
                     new ItemStack(Material.DIRT, 24)
-            )
+            ),
+            true
     );
     public static final MysticRecipe TIER_II_ENCHANTMENTS_BOX_RECIPE = MysticRecipe.register(
             "Tier II Enchantments Box",
@@ -139,7 +148,8 @@ public class MysticRecipes {
                     new ItemStack(Material.GOLD_INGOT, 30),
                     new ItemStack(Material.AMETHYST_SHARD, 6),
                     new ItemStack(Material.STONE, 36)
-            )
+            ),
+            true
     );
     public static final MysticRecipe TIER_III_ENCHANTMENTS_BOX_RECIPE = MysticRecipe.register(
             "Tier III Enchantments Box",
@@ -152,7 +162,8 @@ public class MysticRecipes {
                     new ItemStack(Material.DIAMOND, 24),
                     new ItemStack(Material.AMETHYST_SHARD, 10),
                     new ItemStack(Material.BLACKSTONE, 32)
-            )
+            ),
+            true
     );
     public static final MysticRecipe TIER_IV_ENCHANTMENTS_BOX_RECIPE = MysticRecipe.register(
             "Tier IV Enchantments Box",
@@ -165,24 +176,25 @@ public class MysticRecipes {
                     new ItemStack(Material.NETHERITE_INGOT, 12),
                     new ItemStack(Material.AMETHYST_SHARD, 16),
                     new ItemStack(Material.END_STONE, 48)
-            )
+            ),
+            true
     );
     public static final MysticRecipe CORPSE_SINGULARITY_RECIPE = EnchantedMysticCoinRecipe.register(
-            BookTiers.ELDRITCH.getColor() + "Eldritch Tier - Corpse Singularity</gradient>",
-            "Shift-Right click for enchantment details",
-            60,
-            MysticItems.CORPSE_SINGULARITY,
-            MysticItems.CORPSE_SINGULARITY,
-            List.of(
+            BookTiers.ELDRITCH.getColor() + "Eldritch Tier - Corpse Singularity</gradient>", // Name in the Gui
+            "Shift-Right click for enchantment details", // Description
+            60, // Level requirement
+            MysticItems.CORPSE_SINGULARITY, // Display
+            MysticItems.CORPSE_SINGULARITY, // Result
+            List.of( // Requirements
                     new ItemStack(Material.ENCHANTED_BOOK, 6),
                     new ItemStack(Material.NETHERITE_INGOT, 16),
                     new ItemStack(Material.DIAMOND, 48),
                     new ItemStack(Material.SCULK_CATALYST, 2)
             ),
-            500,
-            new FlexEnchantment(MysticEnchants.CORPSE_SINGULARITY, MysticItems.CORPSE_SINGULARITY)
+            500, // Mystic Coins Price
+            new FlexEnchantment(MysticEnchants.CORPSE_SINGULARITY, MysticItems.CORPSE_SINGULARITY), // FlexEnchantment instance for the random leveling,
+            true
     );
-
     public static final MysticRecipe ECLIPSE_EDGE_RECIPE = EnchantedMysticCoinRecipe.register(
             BookTiers.ELDRITCH.getColor() + "Eldritch Tier - Eclipse Edge</gradient>",
             "Shift-Right click for enchantment details",
@@ -196,7 +208,8 @@ public class MysticRecipes {
                     new ItemStack(Material.SCULK_CATALYST, 2)
             ),
             600,
-            new FlexEnchantment(MysticEnchants.ECLIPSE_EDGE, MysticItems.ECLIPSE_EDGE)
+            new FlexEnchantment(MysticEnchants.ECLIPSE_EDGE, MysticItems.ECLIPSE_EDGE),
+            true
     );
     public static final MysticRecipe ELDRITCH_KEEN_EYE_RECIPE = MysticCoinRecipe.register(
             BookTiers.ELDRITCH.getColor() + "Eldritch Tier - Eldritch Keen Eye</gradient>",
@@ -210,7 +223,8 @@ public class MysticRecipes {
                     new ItemStack(Material.DIAMOND, 64),
                     new ItemStack(Material.SCULK_CATALYST, 3)
             ),
-            800
+            800,
+            true
     );
     public static final MysticRecipe FINAL_RECKONING_RECIPE = MysticCoinRecipe.register(
             BookTiers.ELDRITCH.getColor() + "Eldritch Tier - Final Reckoning</gradient>",
@@ -224,7 +238,8 @@ public class MysticRecipes {
                     new ItemStack(Material.DIAMOND, 24),
                     new ItemStack(Material.TNT, 16)
             ),
-            600
+            600,
+            true
     );
     public static final MysticRecipe UPGRADE_CRYSTAL_RECIPE = MysticCoinRecipe.register(
             "Upgrade Crystal",
@@ -237,7 +252,8 @@ public class MysticRecipes {
                     new ItemStack(Material.BOOK, 8),
                     new ItemStack(Material.STONE_PICKAXE, 2)
             ),
-            20
+            20,
+            true
     );
 
     public static final MysticRecipe LIGHTNING_WAND_RECIPE = MysticCoinRecipe.register(
@@ -253,21 +269,23 @@ public class MysticRecipes {
                     new ItemStack(Material.SKULL_POTTERY_SHERD, 1),
                     new ItemStack(Material.LIGHTNING_ROD, 32)
                     ),
-            50
+            50,
+            true
     );
     public static final MysticRecipe HEALING_WAND_WAND_RECIPE = MysticCoinRecipe.register(
-            "Healing Wand",
-            "Heals you or other players",
-            50,
-            MysticItems.HEALING_WAND,
-            MysticItems.HEALING_WAND,
-            List.of(
+            "Healing Wand", // Name in The Gui
+            "Heals you or other players", // Description
+            50, // Level Requirement
+            MysticItems.HEALING_WAND, // Display Item
+            MysticItems.HEALING_WAND, // Result Item
+            List.of( // Requirements
                     new ItemStack(Material.STICK, 32),
                     new ItemStack(Material.HEART_POTTERY_SHERD, 1),
                     new ItemStack(Material.ENCHANTED_BOOK, 3),
                     new ItemStack(Material.COOKED_BEEF, 32)
             ),
-            40
+            40, // Mystic Coins Price,
+            true
     );
 
     public static void init() {}

@@ -15,20 +15,32 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 public class ItemStackBuilder {
     private ItemStack itemStack;
+    private static MiniMessage mm = MiniMessage.miniMessage();
     public static ItemStackBuilder of(Material material, int amount) {
-        ItemStackBuilder builder = new ItemStackBuilder();
-        builder.itemStack = new ItemStack(material, amount);
-        return builder;
+        return new ItemStackBuilder(material, amount);
+    }
+    private ItemStackBuilder(Material material, int amount) {
+        this.itemStack = new ItemStack(material, amount);
+    }
+    private ItemStackBuilder(Material material) {
+        this.itemStack = new ItemStack(material);
     }
     public static ItemStackBuilder of(Material material) {
-        ItemStackBuilder builder = new ItemStackBuilder();
-        builder.itemStack = new ItemStack(material);
-        return builder;
+        return new ItemStackBuilder(material);
+    }
+
+    private ItemStackBuilder(ItemStack itemStack) {
+        this.itemStack = itemStack;
+    }
+
+    public ItemStackBuilder copy() {
+        return new ItemStackBuilder(this.itemStack.clone());
     }
 
     public ItemStackBuilder setDurability(int durability) {
@@ -36,6 +48,7 @@ public class ItemStackBuilder {
         itemStack.setData(DataComponentTypes.DAMAGE, 0);
         return this;
     }
+
     public ItemStackBuilder setLore(String lore) {
         ItemMeta meta = itemStack.getItemMeta();
         meta.lore(List.of(MiniMessage.miniMessage().deserialize(lore)));
@@ -78,6 +91,10 @@ public class ItemStackBuilder {
     public ItemStack build() {
         return this.itemStack;
     }
+    public ItemStack build(boolean cloned) {
+        if (cloned) return this.itemStack.clone();
+        return this.itemStack;
+    }
 
     public ItemStackBuilder addId(String id) {
         ItemDataUtils.addData(itemStack, id);
@@ -118,6 +135,16 @@ public class ItemStackBuilder {
 
     public ItemStackBuilder setHideToolTip(boolean b) {
         this.itemStack.editMeta(meta -> meta.setHideTooltip(b));
+        return this;
+    }
+
+    public ItemStackBuilder addToLore(String s) {
+        this.itemStack.editMeta(meta -> {
+            List<Component> lore = meta.lore();
+            lore = lore == null ? new ArrayList<>() : lore;
+            lore.add(mm.deserialize(s));
+            meta.lore(lore);
+        });
         return this;
     }
 }

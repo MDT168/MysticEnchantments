@@ -1,5 +1,7 @@
 package com.mdt168.mysticEnchantments.craft.recipes;
 
+import com.mdt168.mysticEnchantments.MysticEnchantments;
+import com.mdt168.mysticEnchantments.config.ConfigSettings;
 import com.mdt168.mysticEnchantments.craft.MysticItems;
 import com.mdt168.mysticEnchantments.craft.recipes.utility.MysticRecipeUtils;
 import com.mdt168.mysticEnchantments.custom.*;
@@ -89,6 +91,24 @@ public class MysticRecipe {
     public static MysticRecipe register(String name, String description, int levelRequirement, Material material, int amount, ItemStack resultItem, List<ItemStack> requirements) {
         MysticRecipe recipe = new MysticRecipe(name, description, levelRequirement, material, amount, resultItem, requirements);
         MysticRecipeUtils.add(recipe);
+        return recipe;
+    }
+    public static MysticRecipe register(String name, String description, int levelRequirement, Material material, ItemStack resultItem, List<ItemStack> requirements, boolean skipOnApiMode) {
+        MysticRecipe recipe = new MysticRecipe(name, description, levelRequirement, material, resultItem, requirements);
+        if ((!(ConfigSettings.API_MODE.getValue() && skipOnApiMode))) MysticRecipeUtils.add(recipe);
+        else MysticEnchantments.blockedContentFromApiMode++;
+        return recipe;
+    }
+    public static MysticRecipe register(String name, String description, int levelRequirement, ItemStack itemToDisplay, ItemStack resultItem, List<ItemStack> requirements, boolean skipOnApiMode) {
+        MysticRecipe recipe = new MysticRecipe(name, description, levelRequirement, itemToDisplay, resultItem, requirements);
+        if ((!(ConfigSettings.API_MODE.getValue() && skipOnApiMode))) MysticRecipeUtils.add(recipe);
+        else MysticEnchantments.blockedContentFromApiMode++;
+        return recipe;
+    }
+    public static MysticRecipe register(String name, String description, int levelRequirement, Material material, int amount, ItemStack resultItem, List<ItemStack> requirements, boolean skipOnApiMode) {
+        MysticRecipe recipe = new MysticRecipe(name, description, levelRequirement, material, amount, resultItem, requirements);
+        if ((!(ConfigSettings.API_MODE.getValue() && skipOnApiMode))) MysticRecipeUtils.add(recipe);
+        else MysticEnchantments.blockedContentFromApiMode++;
         return recipe;
     }
 

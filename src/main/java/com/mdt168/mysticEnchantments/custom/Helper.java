@@ -4,10 +4,7 @@ import com.destroystokyo.paper.MaterialTags;
 import com.mdt168.mysticEnchantments.MysticEnchantments;
 import com.mdt168.mysticEnchantments.craft.builders.ItemStackBuilder;
 import com.mdt168.mysticEnchantments.custom.dataUtils.EnchantmentsUtils;
-import com.mdt168.mysticEnchantments.enchants.EnchantmentStack;
-import com.mdt168.mysticEnchantments.enchants.HumaneEnchantment;
-import com.mdt168.mysticEnchantments.enchants.MysticEnchantmentComponent;
-import com.mdt168.mysticEnchantments.enchants.MysticEnchants;
+import com.mdt168.mysticEnchantments.enchants.*;
 import com.mdt168.mysticEnchantments.craft.recipes.MysticRecipe;
 import com.mdt168.mysticEnchantments.dataUtils.ScrollOfPreservationUtils;
 import com.mdt168.mysticEnchantments.settings.Setting;
@@ -881,6 +878,7 @@ public class Helper {
         ItemStack enchantedBook = new ItemStack(Material.ENCHANTED_BOOK);
         enchantedBook.setData(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE, false);
         ItemDataUtils.addData(enchantedBook, humaneEnchantment.getId());
+
         enchantedBook.editMeta(meta -> {
             MiniMessage mm = MiniMessage.miniMessage();
             List<Component> lore = new ArrayList<>();
@@ -1570,25 +1568,8 @@ public class Helper {
             return false;
         }
     }
-
-    public static List<EnchantedItem> getEnchantedItems() {
-        List<EnchantedItem> list = new ArrayList<>();
-        Field[] fields = EnchantedCrateItems.class.getDeclaredFields();
-        for (Field field : fields) {
-            if (field.getType().equals(EnchantedItem.class) && Modifier.isStatic(field.getModifiers())) {
-                field.setAccessible(true);
-                try {
-                    EnchantedItem item = (EnchantedItem) field.get(null);
-                    if (item != null) list.add(item);
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }
-        return list;
-    }
     public static double calculateCrateItemChance(int weight) {
-        List<EnchantedItem> enchantedItems = getEnchantedItems();
+        List<EnchantedItem> enchantedItems = EnchantedItem.getEnchantedItems();
         int totalWeight = 0;
         for (EnchantedItem enchantedItem : enchantedItems) {
             totalWeight += enchantedItem.getWeight();
@@ -1877,5 +1858,9 @@ public class Helper {
 
     public static int betweenBounds(int index, int min, int max) {
         return Math.max(min, Math.min(max, index));
+    }
+
+    public static <T> T rollFromList(List<T> list) {
+        return list.get(random.nextInt(list.size()));
     }
 }

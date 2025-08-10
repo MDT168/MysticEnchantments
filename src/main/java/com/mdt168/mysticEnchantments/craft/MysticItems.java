@@ -29,6 +29,23 @@ public class MysticItems {
             ))
             .setId("arcane_amplifier")
             .build();
+    public static final ItemStack HUMANE_VIEWER = ItemStackBuilder.of(Material.BLACK_BANNER)
+            .setLore(List.of(
+                    mm.deserialize("<!i><yellow>- View the humane enchantments that you are enchanted with"),
+                    mm.deserialize("<!i><green>- Click to view")
+            ))
+            .setDisplayName(Gradient.BLUE + "<!i>View Humane Enchantments")
+            .setId("humane_viewer")
+            .build();
+    public static final ItemStack ADDONS = ItemStackBuilder.of(Material.GREEN_BANNER)
+            .setLore(List.of(
+                    mm.deserialize("<!i>" + Gradient.YELLOW + "• Learn how to create Add-ons for Mystic Enchantments"),
+                    mm.deserialize("<!i>" + Gradient.YELLOW + "• Make your own custom enchantments, humane enchantments, "),
+                    mm.deserialize("<!i>" + Gradient.YELLOW + "  recipes, and Options!")
+            ))
+            .setDisplayName(Gradient.BLUE + "<!i>Add-ons")
+            .setId("addons")
+            .build();
     public static final ItemStack ENCHANTMENT_EXTRACTOR = ItemStackBuilder.of(Material.BOOK)
             .setDisplayName(Gradient.PINK + "Enchantment Extractor")
             .setLore(List.of(
