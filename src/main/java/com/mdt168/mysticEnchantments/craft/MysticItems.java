@@ -1,6 +1,7 @@
 package com.mdt168.mysticEnchantments.craft;
 
 import com.mdt168.mysticEnchantments.craft.builders.ItemStackBuilder;
+import com.mdt168.mysticEnchantments.craft.custom.InteractableItem;
 import com.mdt168.mysticEnchantments.enchants.MysticEnchants;
 import com.mdt168.mysticEnchantments.custom.BookTiers;
 import com.mdt168.mysticEnchantments.custom.Gradient;
@@ -8,6 +9,10 @@ import io.papermc.paper.datacomponent.DataComponentTypes;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockType;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemRarity;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;

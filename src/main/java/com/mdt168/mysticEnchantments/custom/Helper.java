@@ -2,11 +2,13 @@ package com.mdt168.mysticEnchantments.custom;
 
 import com.destroystokyo.paper.MaterialTags;
 import com.mdt168.mysticEnchantments.MysticEnchantments;
+import com.mdt168.mysticEnchantments.config.ConfigSettings;
 import com.mdt168.mysticEnchantments.craft.builders.ItemStackBuilder;
 import com.mdt168.mysticEnchantments.custom.dataUtils.EnchantmentsUtils;
 import com.mdt168.mysticEnchantments.enchants.*;
 import com.mdt168.mysticEnchantments.craft.recipes.MysticRecipe;
 import com.mdt168.mysticEnchantments.dataUtils.ScrollOfPreservationUtils;
+import com.mdt168.mysticEnchantments.resources.MysticResource;
 import com.mdt168.mysticEnchantments.settings.Setting;
 import com.mdt168.mysticEnchantments.settings.Settings;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
@@ -444,110 +446,6 @@ public class Helper {
 
     public static double round(double number, int places) {
         return Math.ceil(number * Math.pow(10, places)) / Math.pow(10, places);
-    }
-
-    @SuppressWarnings("UnstableApiUsage")
-    public static LiteralCommandNode<CommandSourceStack> getMysticResourcesGiverCommand() {
-        return Commands.literal("mysticresources")
-                .requires(source -> source.getSender().hasPermission("mysticresources.use"))
-                .then(Commands.literal("remove")
-                        .then(Commands.argument("player", ArgumentTypes.player())
-                                .then(Commands.literal("sap")
-                                        .then(Commands.argument("amount", IntegerArgumentType.integer(0))
-                                                .executes(ctx -> {
-                                                    Player target = ctx.getArgument("player", PlayerSelectorArgumentResolver.class).resolve(ctx.getSource()).getFirst();
-                                                    int amount = ctx.getArgument("amount", Integer.class);
-                                                    MysticCurrencyUtils.removeSap(target, amount);
-                                                    Helper.sendMessage(ctx.getSource().getSender(), "<green>" + amount + " saps<gold> has been removed from <green>" + target.getName());
-                                                    Helper.sendMessage(target, "<green>" + amount + " saps <yellow>has been removed from your balance!");
-                                                    return 0;
-                                                })))
-                                .then(Commands.literal("fragment")
-                                        .then(Commands.argument("amount", IntegerArgumentType.integer(0))
-                                                .executes(ctx -> {
-                                                    Player target = ctx.getArgument("player", PlayerSelectorArgumentResolver.class).resolve(ctx.getSource()).getFirst();
-                                                    int amount = ctx.getArgument("amount", Integer.class);
-                                                    MysticCurrencyUtils.removeFragments(target, amount);
-                                                    Helper.sendMessage(ctx.getSource().getSender(), "<green>" + amount + " fragments<gold> has been removed from <green>" + target.getName());
-                                                    Helper.sendMessage(target, "<green>" + amount + " fragments <yellow>has been removed from your balance!");
-                                                    return 0;
-                                                })))
-                                .then(Commands.literal("soul")
-                                        .then(Commands.argument("amount", IntegerArgumentType.integer(0))
-                                                .executes(ctx -> {
-                                                    Player target = ctx.getArgument("player", PlayerSelectorArgumentResolver.class).resolve(ctx.getSource()).getFirst();
-                                                    int amount = ctx.getArgument("amount", Integer.class);
-                                                    MysticCurrencyUtils.removeSouls(target, amount);
-                                                    Helper.sendMessage(ctx.getSource().getSender(), "<green>" + amount + " souls<gold> has been removed from <green>" + target.getName());
-                                                    Helper.sendMessage(target, "<green>" + amount + " souls <yellow>has been removed from your balance!");
-                                                    return 0;
-                                                })))))
-                .then(Commands.literal("set")
-                        .then(Commands.literal("sap")
-                                .then(Commands.argument("amount", IntegerArgumentType.integer(0))
-                                        .executes(ctx -> {
-                                            Player target = ctx.getArgument("player", PlayerSelectorArgumentResolver.class).resolve(ctx.getSource()).getFirst();
-                                            int amount = ctx.getArgument("amount", Integer.class);
-                                            MysticCurrencyUtils.setSap(target, amount);
-                                            Helper.sendMessage(ctx.getSource().getSender(), "<green>" + amount + " saps<gold> has been set as the balance of <green>" + target.getName());
-                                            Helper.sendMessage(target, "<green>" + amount + " saps <yellow>has been set as your balance!");
-                                            return 0;
-                                        })))
-                        .then(Commands.literal("fragment")
-                                .then(Commands.argument("amount", IntegerArgumentType.integer(0))
-                                        .executes(ctx -> {
-                                            Player target = ctx.getArgument("player", PlayerSelectorArgumentResolver.class).resolve(ctx.getSource()).getFirst();
-                                            int amount = ctx.getArgument("amount", Integer.class);
-                                            MysticCurrencyUtils.setFragments(target, amount);
-                                            Helper.sendMessage(ctx.getSource().getSender(), "<green>" + amount + " fragments<gold> has been set as the balance of <green>" + target.getName());
-                                            Helper.sendMessage(target, "<green>" + amount + " fragments <yellow>has been set as your balance!");
-                                            return 0;
-                                        })))
-                        .then(Commands.argument("player", ArgumentTypes.player())
-                                .then(Commands.literal("soul")
-                                        .then(Commands.argument("amount", IntegerArgumentType.integer(0))
-                                                .executes(ctx -> {
-                                                    Player target = ctx.getArgument("player", PlayerSelectorArgumentResolver.class).resolve(ctx.getSource()).getFirst();
-                                                    int amount = ctx.getArgument("amount", Integer.class);
-                                                    MysticCurrencyUtils.setSouls(target, amount);
-                                                    Helper.sendMessage(ctx.getSource().getSender(), "<green>" + amount + " souls<gold> has been set as the balance of <green>" + target.getName());
-                                                    Helper.sendMessage(target, "<green>" + amount + " souls <yellow>has been set as your balance!");
-                                                    return 0;
-                                                })))))
-                .then(Commands.literal("give")
-                        .then(Commands.argument("player", ArgumentTypes.player())
-                                .then(Commands.literal("sap")
-                                        .then(Commands.argument("amount", IntegerArgumentType.integer(0))
-                                                .executes(ctx -> {
-                                                    Player target = ctx.getArgument("player", PlayerSelectorArgumentResolver.class).resolve(ctx.getSource()).getFirst();
-                                                    int amount = ctx.getArgument("amount", Integer.class);
-                                                    MysticCurrencyUtils.addSap(target, amount);
-                                                    Helper.sendMessage(ctx.getSource().getSender(), "<green>" + amount + " saps<gold> was successfully added to <green>" + target.getName());
-                                                    Helper.sendMessage(target, "<green>" + amount + " saps <yellow>got added to your balance!");
-                                                    return 0;
-                                                })))
-                                .then(Commands.literal("fragment")
-                                        .then(Commands.argument("amount", IntegerArgumentType.integer(0))
-                                                .executes(ctx -> {
-                                                    Player target = ctx.getArgument("player", PlayerSelectorArgumentResolver.class).resolve(ctx.getSource()).getFirst();
-                                                    int amount = ctx.getArgument("amount", Integer.class);
-                                                    MysticCurrencyUtils.addFragments(target, amount);
-                                                    Helper.sendMessage(ctx.getSource().getSender(), "<green>" + amount + " fragments<gold> was successfully added to <green>" + target.getName());
-                                                    Helper.sendMessage(target, "<green>" + amount + " fragments <yellow>got added to your balance!");
-                                                    return 0;
-                                                })))
-                                .then(Commands.literal("soul")
-                                        .then(Commands.argument("amount", IntegerArgumentType.integer(0))
-                                                .executes(ctx -> {
-                                                    Player target = ctx.getArgument("player", PlayerSelectorArgumentResolver.class).resolve(ctx.getSource()).getFirst();
-                                                    int amount = ctx.getArgument("amount", Integer.class);
-                                                    MysticCurrencyUtils.addSouls(target, amount);
-                                                    Helper.sendMessage(ctx.getSource().getSender(), "<green>" + amount + " souls<gold> was successfully added to <green>" + target.getName());
-                                                    Helper.sendMessage(target, "<green>" + amount + " souls <yellow>got added to your balance!");
-                                                    return 0;
-                                                }))))
-                ).build();
-
     }
 
     @SuppressWarnings("UnstableApiUsage")
@@ -1545,15 +1443,12 @@ public class Helper {
         return entity instanceof Monster;
     }
 
-    public static void giveXp(Player player, int xpToGive) {
-        player.setExperienceLevelAndProgress(player.calculateTotalExperiencePoints() + xpToGive);
+    public static String toId(String string) {
+        return string.toLowerCase().replace(" ", "_").replace("'", "");
     }
 
-    public static boolean isFragmentsOre(Block block) {
-        for (Material material : MysticCurrencyUtils.ORE_DROP_MODIFIERS.keySet()) {
-            if (block.getType() == material) return true;
-        }
-        return false;
+    public static void giveXp(Player player, int xpToGive) {
+        player.setExperienceLevelAndProgress(player.calculateTotalExperiencePoints() + xpToGive);
     }
 
     public static boolean isCorrectTool(BlockState block, Player player) {
@@ -1728,6 +1623,10 @@ public class Helper {
         enchantedCrateMeta.displayName(mm.deserialize(
                 "<gradient:#D08CFF:#FF55FF><!i>✧ Enchanted Crate ✧</gradient>"
         ));
+
+
+
+
         enchantedCrateMeta.lore(List.of(
                 mm.deserialize("<#B388FF><!i>Mystic Enchantments Crate</#B388FF>"),
                 Component.empty(),
@@ -1750,6 +1649,10 @@ public class Helper {
     public static void sendActionBar(Player player, String message) {
         if (!Settings.RECEIVE_ACTIONBAR.getValue(player)) return;
         player.sendActionBar(MiniMessage.miniMessage().deserialize(message));
+    }
+    public static void sendResourceActionBar(Player player, MysticResource resource) {
+        if (!ConfigSettings.ENABLE_MYSTIC_RESOURCES.getValue()) return;
+        player.sendActionBar(MiniMessage.miniMessage().deserialize(Gradient.YELLOW + "<b>Mystic Resources</b> > " + Gradient.GREEN + resource.getName() + Gradient.AQUA + " dropped"));
     }
     public static void sendActionBar(Player player, Component message) {
         if (!Settings.RECEIVE_ACTIONBAR.getValue(player)) return;
@@ -1862,5 +1765,12 @@ public class Helper {
 
     public static <T> T rollFromList(List<T> list) {
         return list.get(random.nextInt(list.size()));
+    }
+
+    public static void forceGiveItem(Player player, ItemStack itemStack) {
+        Map<Integer, ItemStack> left = player.getInventory().addItem(itemStack);
+        for (ItemStack item : left.values()) {
+            player.getWorld().dropItem(player.getLocation(), item);
+        }
     }
 }

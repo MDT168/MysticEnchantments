@@ -1,5 +1,5 @@
 name: MysticEnchantments
-version: '1.15.1'
+version: '1.15.2'
 main: com.mdt168.mysticEnchantments.MysticEnchantments
 api-version: '1.21.4'
 authors: [ MDT168 ]

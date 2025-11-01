@@ -66,7 +66,7 @@ public class MysticEnchants {
             "Elite Soulkey",
             "Swords",
             "Gives an Enchanted Key to the player on mob kill",
-            1.25,
+            0.9,
             BookTiers.ELITE,
             true
     );
@@ -74,7 +74,7 @@ public class MysticEnchants {
             "Elite Minekey",
             "Pickaxes",
             "Gives an Enchanted Key to the player on pickaxe-mineable block mine",
-            0.5,
+            0.4,
             BookTiers.ELITE,
             true
     );
@@ -82,7 +82,7 @@ public class MysticEnchants {
             "Elite Woodkey",
             "Axes",
             "Gives an Enchanted Key to the player on log break",
-            0.4,
+            0.3,
             BookTiers.ELITE,
             true
     );
@@ -98,7 +98,7 @@ public class MysticEnchants {
             "Elite Cropkey",
             "Hoes",
             "Gives an Enchanted Key to the player on grown crops break",
-            0.2,
+            0.1,
             BookTiers.ELITE,
             true
     );
@@ -106,7 +106,7 @@ public class MysticEnchants {
             "Mythic Soulkey",
             "Swords",
             "Gives an Enchanted Key to the player on mob kill",
-            100,
+            1.2,
             BookTiers.MYTHIC,
             true
     );
@@ -114,7 +114,7 @@ public class MysticEnchants {
             "Mythic Minekey",
             "Pickaxes",
             "Gives an Enchanted Key to the player on pickaxe-mineable block mine",
-            1,
+            0.8,
             BookTiers.MYTHIC,
             true
     );
@@ -122,7 +122,7 @@ public class MysticEnchants {
             "Mythic Woodkey",
             "Axes",
             "Gives an Enchanted Key to the player on log break",
-            0.7,
+            0.6,
             BookTiers.MYTHIC,
             true
     );
@@ -130,7 +130,7 @@ public class MysticEnchants {
             "Mythic Dirtkey",
             "Shovels",
             "Gives an Enchanted Key to the player on shovel-mineable block mine",
-            0.2,
+            0.15,
             BookTiers.MYTHIC,
             true
     );
@@ -138,7 +138,7 @@ public class MysticEnchants {
             "Mythic Cropkey",
             "Hoes",
             "Gives an Enchanted Key to the player on grown crops break",
-            0.4,
+            0.25,
             BookTiers.MYTHIC,
             true
     );
@@ -689,6 +689,22 @@ public class MysticEnchants {
             BookTiers.ENHANCED,
             true
     );
+    public static final EnchantmentStack COMMON_HARVEST = EnchantmentStack.register(
+            "Common Harvest",
+            "Tools",
+            "Increases the chance of getting Common Mystic Resources (5% per level)",
+            100,
+            BookTiers.BASIC,
+            true
+    );
+    public static final EnchantmentStack COMMON_FORTUNE = EnchantmentStack.register(
+            "Common Fortune",
+            "Tools",
+            "+1 Mystic Resources On Drop",
+            5,
+            BookTiers.BASIC,
+            true
+    );
     public static final EnchantmentStack WINDSTEP = EnchantmentStack.register(
             "Windstep",
             "Boots",
@@ -786,142 +802,6 @@ public class MysticEnchants {
             true
     );
 
-    public static final EnchantmentStack REFINED_SOULS_HUNTER = EnchantmentStack.register(
-            "Refined Souls Hunter",
-            "Sharp Weapons",
-            "Increases the chance of earning Mystic Souls by 1.15x each level",
-            100,
-            BookTiers.REFINED,
-            true
-    );
-    public static final EnchantmentStack ELITE_SOULS_HUNTER = EnchantmentStack.register(
-            "Elite Souls Hunter",
-            "Sharp Weapons",
-            "Increases the chance of earning Mystic Souls by 1.25x each level",
-            100,
-            BookTiers.ELITE,
-            true
-    );
-    public static final EnchantmentStack MYTHIC_SOULS_HUNTER = EnchantmentStack.register(
-            "Mythic Souls Hunter",
-            "Sharp Weapons",
-            "Increases the chance of earning Mystic Souls by 1.4x each level",
-            100,
-            BookTiers.MYTHIC,
-            true
-    );
-    public static final EnchantmentStack REFINED_FRAGMENTATION = EnchantmentStack.register(
-            "Refined Fragmentation",
-            "Pickaxes",
-            "Increases the chance of earning Mystic Fragments by 1.15x each level",
-            100,
-            BookTiers.REFINED,
-            true
-    );
-    public static final EnchantmentStack ELITE_FRAGMENTATION = EnchantmentStack.register(
-            "Elite Fragmentation",
-            "Pickaxes",
-            "Increases the chance of earning Mystic Fragments by 1.25x each level",
-            100,
-            BookTiers.ELITE,
-            true
-    );
-    public static final EnchantmentStack MYTHIC_FRAGMENTATION = EnchantmentStack.register(
-            "Mythic Fragmentation",
-            "Pickaxes",
-            "Increases the chance of earning Mystic Fragments by 1.4x each level",
-            100,
-            BookTiers.MYTHIC,
-            true
-    );
-    public static final EnchantmentStack REFINED_SAPSURGE = EnchantmentStack.register(
-            "Refined Sapsurge",
-            "Axes",
-            "Increases the chance of earning Mystic Sap by 1.15x each level",
-            100,
-            BookTiers.REFINED,
-            true
-    );
-    public static final EnchantmentStack ELITE_SAPSURGE = EnchantmentStack.register(
-            "Elite Sapsurge",
-            "Axes",
-            "Increases the chance of earning Mystic Sap by 1.25x each level",
-            100,
-            BookTiers.ELITE,
-            true
-    );
-    public static final EnchantmentStack MYTHIC_SAPSURGE = EnchantmentStack.register(
-            "Mythic Sapsurge",
-            "Axes",
-            "Increases the chance of earning Mystic Sap by 1.4x each level",
-            100,
-            BookTiers.MYTHIC,
-            true
-    );
-    public static final HumaneEnchantment REFINED_LEECHBOUND = HumaneEnchantment.register(
-            "Refined Leechbound",
-            "Increases the amount of Mystic Coins earned from Exchanging Mystic Souls by 1.2x",
-            100,
-            BookTiers.REFINED,
-            true
-    );
-    public static final HumaneEnchantment ELITE_LEECHBOUND = HumaneEnchantment.register(
-            "Elite Leechbound",
-            "Increases the amount of Mystic Coins earned from Exchanging Mystic Souls by 1.4x",
-            100,
-            BookTiers.ELITE,
-            true
-    );
-    public static final HumaneEnchantment MYTHIC_LEECHBOUND = HumaneEnchantment.register(
-            "Mythic Leechbound",
-            "Increases the amount of Mystic Coins earned from Exchanging Mystic Souls by 1.75x",
-            100,
-            BookTiers.MYTHIC,
-            true
-    );
-    public static final HumaneEnchantment REFINED_CRYSTABURST = HumaneEnchantment.register(
-            "Refined Crystaburst",
-            "Increases the amount of Mystic Coins earned from Exchanging Mystic Fragments by 1.2x",
-            100,
-            BookTiers.REFINED,
-            true
-    );
-    public static final HumaneEnchantment ELITE_CRYSTABURST = HumaneEnchantment.register(
-            "Elite Crystaburst",
-            "Increases the amount of Mystic Coins earned from Exchanging Mystic Fragments by 1.4x",
-            100,
-            BookTiers.ELITE,
-            true
-    );
-    public static final HumaneEnchantment MYTHIC_CRYSTABURST = HumaneEnchantment.register(
-            "Mythic Crystaburst",
-            "Increases the amount of Mystic Coins earned from Exchanging Mystic Fragments by 1.75x",
-            100,
-            BookTiers.MYTHIC,
-            true
-    );
-    public static final HumaneEnchantment REFINED_VERDURE = HumaneEnchantment.register(
-            "Refined Verdure",
-            "Increases the amount of Mystic Coins earned from Exchanging Mystic Sap by 1.2x",
-            100,
-            BookTiers.REFINED,
-            true
-    );
-    public static final HumaneEnchantment ELITE_VERDURE = HumaneEnchantment.register(
-            "Elite Verdure",
-            "Increases the amount of Mystic Coins earned from Exchanging Mystic Sap by 1.4x",
-            100,
-            BookTiers.ELITE,
-            true
-    );
-    public static final HumaneEnchantment MYTHIC_VERDURE = HumaneEnchantment.register(
-            "Mythic Verdure",
-            "Increases the amount of Mystic Coins earned from Exchanging Mystic Sap by 1.75x",
-            100,
-            BookTiers.MYTHIC,
-            true
-    );
-
     public static final EnchantmentStack SAPLING_SEEKER = EnchantmentStack.register(
             "Sapling Seeker",
             "Axes",
@@ -986,32 +866,4 @@ public class MysticEnchants {
             ELITE_PROSPECTOR,
             MYTHIC_PROSPECTOR
     };
-    public static final HumaneEnchantment[] CONFLICT_FRAGMENTS = {
-            ELITE_CRYSTABURST,
-            REFINED_CRYSTABURST,
-            MYTHIC_CRYSTABURST
-    };
-    public static final HumaneEnchantment[] CONFLICT_SAPS = {
-            MYTHIC_VERDURE,
-            MYTHIC_VERDURE,
-            MYTHIC_VERDURE
-    };
-    public static final HumaneEnchantment[] CONFLICT_SOUL = {
-            REFINED_LEECHBOUND,
-            ELITE_LEECHBOUND,
-            MYTHIC_LEECHBOUND
-    };
-    static {
-        REFINED_LEECHBOUND.setConflictsWith(CONFLICT_SOUL);
-        ELITE_LEECHBOUND.setConflictsWith(CONFLICT_SOUL);
-        MYTHIC_LEECHBOUND.setConflictsWith(CONFLICT_SOUL);
-
-        REFINED_CRYSTABURST.setConflictsWith(CONFLICT_FRAGMENTS);
-        ELITE_CRYSTABURST.setConflictsWith(CONFLICT_FRAGMENTS);
-        MYTHIC_CRYSTABURST.setConflictsWith(CONFLICT_FRAGMENTS);
-
-        REFINED_VERDURE.setConflictsWith(CONFLICT_SAPS);
-        ELITE_VERDURE.setConflictsWith(CONFLICT_SAPS);
-        MYTHIC_VERDURE.setConflictsWith(CONFLICT_SAPS);
-    }
 }

@@ -1,6 +1,5 @@
 package com.mdt168.mysticEnchantments.custom.dataUtils;
 
-import com.mdt168.mysticEnchantments.config.ConfigSettings;
 import com.mdt168.mysticEnchantments.craft.builders.ItemStackBuilder;
 import com.mdt168.mysticEnchantments.custom.*;
 import com.mdt168.mysticEnchantments.enchants.HumaneEnchantment;
@@ -19,6 +18,30 @@ import java.util.List;
 public class Guis {
     private static final Inventory main = GuiHelper.getMainGui();
 
+    private static final MiniMessage mm = MiniMessage.miniMessage();
+    private static final ItemStackBuilder EFFORTS = ItemStackBuilder.of(Material.EMERALD)
+            .setDisplayName("<gradient:#BA55D3:#FF6EC7><bold><!i>✧ Mystic Effort Points ✧</bold></gradient>");
+    private static void updateEfforts(Inventory inventory, Player player) {
+        inventory.setItem(13, EFFORTS.setLore(List.of(
+                mm.deserialize("<gray><!i>• Get Mystic Effort Points by"),
+                mm.deserialize("<gradient:#FFACFC:#FF77A9><!i>  Damaging and Breaking Blocks (Hardness > 1)</gradient>"),
+                Component.empty(),
+
+                mm.deserialize("<!i>" + Gradient.GREEN + "• Progress: " +
+                        MysticCoinHandler.getEffortPoints(player) + "/" +
+                        MysticCoinHandler.getNeededEfforts()),
+                Component.empty(),
+                mm.deserialize("<!i><dark_purple>|</dark_purple><gradient:#c471ed:#f7797d>━━━━━━━━━━━━</gradient><dark_purple>|</dark_purple>"),
+                mm.deserialize("<!i>" + Gradient.PINK + "• Level: " + MysticCoinHandler.getLevel(player)),
+                mm.deserialize("<!i>" + Gradient.AQUA + "• Booster: " + MysticCoinHandler.getBooster(player) + "%"),
+                mm.deserialize("<!i><dark_purple>|</dark_purple><gradient:#c471ed:#f7797d>━━━━━━━━━━━━</gradient><dark_purple>|</dark_purple>"),
+                Component.empty(),
+                mm.deserialize("<!i>" + Gradient.AQUA + "• Earn " +
+                        MysticCoinHandler.getMinMysticCoinsReward(player) + "-" +
+                        MysticCoinHandler.getMaxMysticCoinsReward(player) + " Mystic Coins"),
+                mm.deserialize("<!i>" + Gradient.YELLOW + "when you reach the goal!")
+        )).build());
+    }
     public static Inventory getMainGui(Player player) {
         String name = "<!i><light_purple>Mystic Enchanter";
         Inventory inventory = Helper.cloneInventory(main, name);
@@ -28,6 +51,8 @@ public class Guis {
         ItemStack refined = inventory.getItem(22);
         ItemStack elite = inventory.getItem(23);
         ItemStack mythic = inventory.getItem(24);
+
+        updateEfforts(inventory, player);
 
         if (basic != null)
             basic.editMeta(meta -> {

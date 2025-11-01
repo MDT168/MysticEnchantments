@@ -142,6 +142,9 @@ public class ItemDataUtils {
         }
         return Arrays.asList(current.split(",")).contains(data);
     }
+    public static boolean hasData(ItemStack itemStack) {
+        return itemStack != null && itemStack.getPersistentDataContainer().has(key);
+    }
     public static boolean hasEnchantmentData(ItemStack itemStack, String data) {
         if (itemStack == null || !itemStack.hasItemMeta() || data == null) {
             return false;
@@ -235,4 +238,10 @@ public class ItemDataUtils {
     }
 
 
+    public static void setIfAbsent(ItemStack itemStack, String data) {
+        if (itemStack == null || itemStack.getType().isAir()) return;
+        itemStack.editPersistentDataContainer(container -> {
+            if (!container.has(key, PersistentDataType.STRING)) setData(itemStack, data);
+        });
+    }
 }

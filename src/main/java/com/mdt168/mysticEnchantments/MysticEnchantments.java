@@ -9,6 +9,7 @@ import com.mdt168.mysticEnchantments.custom.pluginoptions.MysticOptions;
 import com.mdt168.mysticEnchantments.enchants.EnchantmentStack;
 import com.mdt168.mysticEnchantments.enchants.HumaneEnchantment;
 import com.mdt168.mysticEnchantments.enchants.MysticEnchants;
+import com.mdt168.mysticEnchantments.resources.MysticResources;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -44,11 +45,8 @@ public final class MysticEnchantments extends JavaPlugin {
         if (ConfigSettings.API_MODE.getValue())
             getLogger().warning(blockedContentFromApiMode + " Registrations have been blocked from 'api-mode' in the config.yml");
 
-
-        LiteralCommandNode<CommandSourceStack> resourceGiverCommand = Helper.getMysticResourcesGiverCommand();
         getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             Commands registrar = event.registrar();
-            registrar.register(resourceGiverCommand);
             registrar.register(Helper.getEnchantedCrateCommand());
 
             registrar.register(MysticTicketsCommand.build());
@@ -95,6 +93,7 @@ public final class MysticEnchantments extends JavaPlugin {
         instance = this;
         EnchantedCrateItems.init();
         ConfigSettings.init();
+        MysticResources.init();
         Config.init(getDataFolder(), "config.yml");
         MysticRecipes.init();
         MysticOptions.init();

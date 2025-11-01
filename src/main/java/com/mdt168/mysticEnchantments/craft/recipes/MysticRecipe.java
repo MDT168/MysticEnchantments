@@ -149,9 +149,6 @@ public class MysticRecipe {
      *         {@code false} Player didn't have enough items, or didn't have enough Mystic Levels and the crafting process wasn't successful
      */
     public boolean craft(Player player) {
-        for (ItemStack itemStack : getRequirements()) {
-            System.out.println(itemStack);
-        }
         int level = MysticCoinHandler.getLevel(player);
         if (level >= getLevelRequirement()) {
             if (InventoryUtils.hasItems(player, getRequirements())) {

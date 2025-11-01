@@ -5,29 +5,26 @@ import java.nio.file.Files;
 
 public class EnchantmentJsonMaker {
     public static void main(String[] args) {
-        createFile("Eclipse Edge", """
+        createFile("Blood Oath", """
                 {
-                  "anvil_cost": 1,
-                  "description": {
-                    "text": "Eclipse Edge",
-                    "color": "#4B0082",
-                    "bold": true
-                  },
-                  "max_cost": {
-                    "base": 16,
-                    "per_level_above_first": 10
-                  },
-                  "max_level": 1,
-                  "min_cost": {
-                    "base": 1,
-                    "per_level_above_first": 10
-                  },
-                  "slots": [
-                    "mainhand"
-                  ],
-                  "supported_items": "#minecraft:swords",
-                  "weight": 10
-                }""");
+                   "anvil_cost": 1,
+                   "description": {
+                     "text": "Blood Oath",
+                     "color": "#e20aff"
+                   },
+                   "max_cost": {
+                     "base": 16,
+                     "per_level_above_first": 10
+                   },
+                   "max_level": 3,
+                   "min_cost": {
+                     "base": 1,
+                     "per_level_above_first": 10
+                   },
+                   "slots": [],
+                   "supported_items": "#minecraft:enchantable/sharp_weapon",
+                   "weight": 2
+                 }""");
         System.out.println("Made");
     }
     private static final String PATH = "C:/Modding/PluginsAndDatapacks/MysticEnchants/MysticEnchantments/src/main/resources/MysticDatapack/data/mysticenchantments/enchantment/";

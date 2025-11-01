@@ -1,18 +1,17 @@
 package com.mdt168.mysticEnchantments.custom.pluginoptions;
 
-import com.mdt168.mysticEnchantments.MysticEnchantments;
 import com.mdt168.mysticEnchantments.config.ConfigSettings;
 import com.mdt168.mysticEnchantments.custom.Helper;
 import com.mdt168.mysticEnchantments.custom.PlayerDataUtils;
-import com.mdt168.mysticEnchantments.enchants.EnchantmentStack;
 import com.mdt168.mysticEnchantments.enchants.HumaneEnchantment;
-import com.mdt168.mysticEnchantments.enchants.MysticEnchants;
 import com.mdt168.mysticEnchantments.enchants.MysticTickets;
+import com.mdt168.mysticEnchantments.utility.buffs.MysticBuffs;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
+@SuppressWarnings("all")
 public class MysticOptions {
     public static final MysticOption PURITY_CRYSTAL = MysticOption.register(
             "Purity Crystal",
@@ -46,6 +45,7 @@ public class MysticOptions {
             player -> Helper.safeGiveItem(player, new ItemStack(Material.ANVIL)),
             true
     );
+
     public static final MysticOption BASIC_TICKETS = MysticOption.register(
             "Basic Enchantments Ticket",
             "A Ticket to give a random Basic Tier Enchantment",
@@ -101,6 +101,20 @@ public class MysticOptions {
             },
             true
     );
-
+    public static final MysticOption MYSTIC_INSIGHT_PERK = MysticOption.register(
+            "Mystic Insight Perk",
+            "Be able to claim the worth of Mystic Resources",
+            ConfigSettings.MYSTIC_INSIGHT_PERK_PRICE,
+            Material.POTION,
+            player -> {
+                if (MysticBuffs.MYSTIC_INSIGHT.hasBuff(player)) {
+                    Helper.sendWarningMessage(player, "You already have this perk!");
+                    return false;
+                }
+                MysticBuffs.MYSTIC_INSIGHT.giveBuff(player);
+                return true;
+            },
+            true
+    );
     public static void init() {}
 }

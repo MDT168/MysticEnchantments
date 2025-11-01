@@ -6,6 +6,7 @@ import com.mdt168.mysticEnchantments.craft.recipes.EnchantedMysticCoinRecipe;
 import com.mdt168.mysticEnchantments.craft.recipes.MysticCoinRecipe;
 import com.mdt168.mysticEnchantments.craft.recipes.utility.FlexEnchantment;
 import com.mdt168.mysticEnchantments.custom.BookTiers;
+import com.mdt168.mysticEnchantments.resources.MysticTools;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -285,6 +286,19 @@ public class MysticRecipes {
                     new ItemStack(Material.COOKED_BEEF, 32)
             ),
             40, // Mystic Coins Price,
+            true
+    );
+    public static final MysticRecipe SPLINTERED_PICKAXE_RECIPE = MysticRecipe.register(
+            "Splintered Pickaxe", // Name in The Gui
+            "Able to mine Coal and Stone for Mystic Resources", // Description
+            50, // Level Requirement
+            MysticTools.SPLINTERED_PICKAXE.asItemStack(), // Display Item
+            MysticTools.SPLINTERED_PICKAXE.asItemStack(), // Result Item
+            List.of( // Requirements
+                    new ItemStack(Material.STICK, 6),
+                    new ItemStack(Material.COBBLESTONE, 2),
+                    new ItemStack(Material.OAK_PLANKS, 6)
+            ),
             true
     );
 

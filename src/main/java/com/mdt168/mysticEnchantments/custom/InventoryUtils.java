@@ -1,5 +1,6 @@
 package com.mdt168.mysticEnchantments.custom;
 
+import com.mdt168.mysticEnchantments.resources.MysticResource;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -18,7 +19,7 @@ public class InventoryUtils {
             int amountFound = 0;
 
             for (ItemStack item : inv.getContents()) {
-                if (item == null) continue;
+                if (ItemDataUtils.hasData(item) || MysticResource.isMysticResource(item) || item == null)  continue;
 
                 if (item.isSimilar(required)) {
                     amountFound += item.getAmount();
@@ -40,7 +41,7 @@ public class InventoryUtils {
 
             for (int i = 0; i < inv.getSize(); i++) {
                 ItemStack item = inv.getItem(i);
-                if (item == null) continue;
+                if (item == null || ItemDataUtils.hasData(item) || MysticResource.isMysticResource(item)) continue;
 
                 if (item.isSimilar(required)) {
                     int amountInSlot = item.getAmount();

@@ -2,14 +2,22 @@ package com.mdt168.mysticEnchantments.craft.builders;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
 import com.destroystokyo.paper.profile.ProfileProperty;
+import com.mdt168.mysticEnchantments.craft.custom.InteractableItem;
+import com.mdt168.mysticEnchantments.craft.custom.OnInteract;
+import com.mdt168.mysticEnchantments.custom.Gradient;
+import com.mdt168.mysticEnchantments.custom.Helper;
 import com.mdt168.mysticEnchantments.enchants.HumaneEnchantment;
 import com.mdt168.mysticEnchantments.custom.ItemDataUtils;
 import io.papermc.paper.datacomponent.DataComponentType;
 import io.papermc.paper.datacomponent.DataComponentTypes;
+import io.papermc.paper.datacomponent.item.Tool;
+import io.papermc.paper.registry.set.RegistryKeySet;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.util.TriState;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.block.BlockType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -17,13 +25,18 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class ItemStackBuilder {
-    private ItemStack itemStack;
-    private static MiniMessage mm = MiniMessage.miniMessage();
+    private final ItemStack itemStack;
+    private static final MiniMessage mm = MiniMessage.miniMessage();
     public static ItemStackBuilder of(Material material, int amount) {
         return new ItemStackBuilder(material, amount);
+    }
+
+    public InteractableBuilder asInteractable(OnInteract onInteract) {
+        return new InteractableBuilder(this.itemStack, onInteract);
     }
     private ItemStackBuilder(Material material, int amount) {
         this.itemStack = new ItemStack(material, amount);
@@ -91,10 +104,6 @@ public class ItemStackBuilder {
     public ItemStack build() {
         return this.itemStack;
     }
-    public ItemStack build(boolean cloned) {
-        if (cloned) return this.itemStack.clone();
-        return this.itemStack;
-    }
 
     public ItemStackBuilder addId(String id) {
         ItemDataUtils.addData(itemStack, id);
@@ -146,5 +155,21 @@ public class ItemStackBuilder {
             meta.lore(lore);
         });
         return this;
+    }
+
+    public static class InteractableBuilder extends ItemStackBuilder {
+        private final InteractableItem item;
+        public InteractableBuilder(ItemStack itemStack, OnInteract onInteract) {
+            super(itemStack);
+            item = InteractableItem.register(itemStack.clone(), onInteract);
+        }
+
+        @Override
+        public ItemStack build() {
+            return item.getItemStack().clone();
+        }
+        public InteractableItem buildInteractable() {
+            return item;
+        }
     }
 }

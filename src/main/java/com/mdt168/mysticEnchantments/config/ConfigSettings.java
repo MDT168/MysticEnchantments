@@ -16,6 +16,12 @@ public class ConfigSettings {
             "The Mystic Coins Price of Enhanced Enchantments Tier (Tier 2)",
             1
     );
+    public static final ConfigSetting<Double> MYSTIC_INSIGHT_PERK_PRICE = ConfigSetting.register(
+            "Mystic Insight Perk Price",
+            40.,
+            "The Price of Mystic Insight Buff in Mystic Options",
+            0
+    );
     public static final ConfigSetting<Double> REFINED_ENCHANTMENTS_PRICE = ConfigSetting.register(
             "Refined Enchantments Price",
             215.,
@@ -101,5 +107,11 @@ public class ConfigSettings {
             true,
             "Show Mystic Crate in the Mystic Enchanter"
     );
+    public static final ConfigSetting<Boolean> ENABLE_MYSTIC_RESOURCES = ConfigSetting.register(
+            "Enable Mystic Resources",
+            true,
+            "If true, Mystic Resources will be able to be collected and used with all Mystic Resources Features"
+    );
+
     public static void init() {}
 }

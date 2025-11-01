@@ -3,7 +3,7 @@ package com.mdt168.mysticEnchantments;
 import com.destroystokyo.paper.event.player.PlayerArmorChangeEvent;
 import com.destroystokyo.paper.event.player.PlayerPickupExperienceEvent;
 import com.mdt168.mysticEnchantments.enchants.MysticTickets;
-import com.mdt168.mysticEnchantments.pages.PagedMysticRecipeGui;
+import com.mdt168.mysticEnchantments.pages.*;
 import com.mdt168.mysticEnchantments.craft.recipes.MysticRecipe;
 import com.mdt168.mysticEnchantments.custom.*;
 import com.mdt168.mysticEnchantments.custom.dataUtils.EntityDataUtils;
@@ -12,9 +12,11 @@ import com.mdt168.mysticEnchantments.custom.pluginoptions.MysticOption;
 import com.mdt168.mysticEnchantments.dataUtils.ScrollOfPreservationUtils;
 import com.mdt168.mysticEnchantments.enchants.EnchantmentStack;
 import com.mdt168.mysticEnchantments.enchants.HumaneEnchantment;
-import com.mdt168.mysticEnchantments.pages.PagedEnchantmentsGui;
-import com.mdt168.mysticEnchantments.pages.PagedGuis;
 import com.mdt168.mysticEnchantments.modifiers.ModifierKeys;
+import com.mdt168.mysticEnchantments.resources.MysticResource;
+import com.mdt168.mysticEnchantments.resources.MysticResources;
+import com.mdt168.mysticEnchantments.resources.MysticTools;
+import com.mdt168.mysticEnchantments.resources.PagedMysticResourcesGui;
 import com.mdt168.mysticEnchantments.settings.Setting;
 import com.mdt168.mysticEnchantments.utility.cooldown.PlayerCooldowns;
 import io.papermc.paper.datacomponent.DataComponentTypes;
@@ -50,7 +52,6 @@ import org.bukkit.event.player.*;
 import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.loot.LootContext;
 import org.bukkit.loot.LootTable;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -70,6 +71,33 @@ public class MysticEvents implements Listener {
         List<Item> items = event.getItems();
         BlockState block = event.getBlockState();
         Location blockLocation = event.getBlock().getLocation();
+        ItemStack tool = player.getInventory().getItemInMainHand();
+
+        // Mystic Resources
+        if (!DB.isPlayerPlaced(block)) {
+            double commonMultiplier = 1;
+            int numberOfItems = 1;
+            if (Helper.enchantmentExists(player, COMMON_FORTUNE)) {
+                int enchantmentLevel = Helper.getEnchantmentLevel(player, COMMON_FORTUNE);
+                double chance = enchantmentLevel * COMMON_HARVEST.getChancePerLevel();
+                if (Helper.rollChance(chance)) {
+                    numberOfItems++;
+                }
+            }
+            if (Helper.enchantmentExists(player, COMMON_HARVEST)) {
+                int enchantmentLevel = Helper.getEnchantmentLevel(player, COMMON_HARVEST);
+                commonMultiplier += 0.05 * enchantmentLevel;
+            }
+            if (block.getType() == Material.COAL_ORE) if (Helper.rollChance(MysticResources.CARBONITE.getDropChance() * commonMultiplier) && MysticTools.SPLINTERED_PICKAXE.isItem(tool)) Helper.runAfterDelay(1, () -> {
+                items.add(world.dropItemNaturally(blockLocation.toCenterLocation(), MysticResources.CARBONITE.getItemStack()));
+                Helper.sendResourceActionBar(player, MysticResources.CARBONITE);
+            });
+            if (block.getType() == Material.COPPER_ORE) if (Helper.rollChance(MysticResources.COPPER_SHARD.getDropChance() * commonMultiplier) && MysticTools.SPLINTERED_PICKAXE.isItem(tool)) Helper.runAfterDelay(1, () -> {
+                items.add(world.dropItemNaturally(blockLocation.toCenterLocation(), MysticResources.COPPER_SHARD.getItemStack()));
+                Helper.sendResourceActionBar(player, MysticResources.COPPER_SHARD);
+            });
+        }
+
         if (Helper.enchantmentExists(player, GLIMMER) && Helper.isValidRawOre(block) && !DB.isPlayerPlaced(block)) {
             int enchantmentLevel = Helper.getEnchantmentLevel(player, GLIMMER);
             double chance = GLIMMER.getChancePerLevel() * enchantmentLevel;
@@ -591,20 +619,6 @@ public class MysticEvents implements Listener {
                     EnchantedCrateUtils.addKey(player, 1);
                 }
             }
-        if (Helper.isFragmentsOre(block) && !DB.isPlayerPlaced(block)) {
-            if (Helper.rollChance(MysticCurrencyUtils.calculateFragmentsChance(player, block))) {
-                MysticCurrencyUtils.addFragments(player, 1);
-                String actionBarMessage = "<gradient:#FF5555:#FFAA00>+1</gradient> <bold><#D08CFF>Mystic Fragments</#D08CFF></bold>";
-                Helper.sendActionBar(player, MiniMessage.miniMessage().deserialize(actionBarMessage));
-            }
-        }
-        if (Helper.isLog(block.getState()) && !DB.isPlayerPlaced(block)) {
-            if (Helper.rollChance(MysticCurrencyUtils.calculateSapChance(player))) {
-                MysticCurrencyUtils.addSap(player, 1);
-                String actionBarMessage = "<gradient:#FF5555:#FFAA00>+1</gradient> <bold><#D08CFF>Mystic Sap</#D08CFF></bold>";
-                Helper.sendActionBar(player, MiniMessage.miniMessage().deserialize(actionBarMessage));
-            }
-        }
         if (Helper.enchantmentsExist(player, EXP_INCREASE_BLOCKS)) {
             double prospectors = Helper.getProspectorsXpModifier(player);
             double xpModifier = 1 + prospectors;
@@ -950,6 +964,13 @@ public class MysticEvents implements Listener {
             }
         }
 
+        MysticResource resource = MysticResource.get(clickedItem);
+        if (resource != null) {
+            clickedItem.setAmount(clickedItem.getAmount() - 1);
+            Helper.sendActionBar(player,  Gradient.YELLOW + "You claimed " + resource.getTier().getColorCode() + resource.getName());
+            MysticCoinUtils.addCoin(player, resource.getWorth());
+        }
+
         if (ItemDataUtils.hasData(clickedItem, "healing_wand")) {
             event.setCancelled(true);
             if (PlayerCooldowns.HEALING_WAND.isOnCooldown(player)) {
@@ -1066,12 +1087,15 @@ public class MysticEvents implements Listener {
         List<ItemStack> drops = event.getDrops();
         Player player = event.getPlayer();
         World world = player.getWorld();
-        for (ItemStack item : drops) {
+        Iterator<ItemStack> it = drops.iterator();
+        while (it.hasNext()) {
+            ItemStack item = it.next();
             if (Helper.enchantmentExists(item, SOULBOUND)) {
                 items.add(item);
-                drops.remove(item);
+                it.remove();
             }
         }
+
         if (PlayerDataUtils.checkIfDataExists(player, UNDYING_KNOWLEDGE.getId())) {
             event.setDroppedExp(0);
             event.setKeepLevel(true);
@@ -1720,7 +1744,10 @@ public class MysticEvents implements Listener {
                     meta.lore(lore);
                 });
             }
-        } else if (ItemDataUtils.hasData(clickedItem, "recipes_menu"))
+        } else if (ItemDataUtils.hasData(clickedItem, "mystic_resources_tab")) {
+            player.openInventory(PagedGuis.RESOURCES.getPage(1, player));
+        }
+        else if (ItemDataUtils.hasData(clickedItem, "recipes_menu"))
             player.openInventory(PagedGuis.RECIPE.getPage(1, player));
 
         else if (ItemDataUtils.hasData(clickedItem, "refined_tab")) {
@@ -1772,16 +1799,11 @@ public class MysticEvents implements Listener {
         else if (ItemDataUtils.hasData(clickedItem, "back")) humanEntity.openInventory(Guis.getMainGui(player));
         else if (ItemDataUtils.hasData(clickedItem, "options_tab"))
             player.openInventory(PagedGuis.OPTIONS.getPage(1, player));
-
-        else if (ItemDataUtils.hasData(clickedItem, "resources_tab"))
-            humanEntity.openInventory(GuiHelper.getResourcesGui(player));
-        else if (ItemDataUtils.hasData(clickedItem, "efforts_tab"))
-            humanEntity.openInventory(GuiHelper.getEffortsGui(player));
         else if (ItemDataUtils.hasData(clickedItem, "humane_viewer")) {
             player.openInventory(Guis.getHumaneEnchantsGui(player));
         }
         else if (ItemDataUtils.hasData(clickedItem, "addons")) {
-            Helper.sendMessage(player, "<click:open_url:'https://github.com/MDT168/MysticEnchantments/wiki/Add%E2%80%90ons-creation-setup'>" + Gradient.YELLOW + "Click here</gradient></click> to open the setup guide");
+            Helper.sendMessage(player, "<click:open_url:'https://github.com/MDT168/MysticEnchantments/wiki/2%E2%80%90-Add%E2%80%90ons-creation-setup'>" + Gradient.YELLOW + "Click here</gradient></click> to open the setup guide");
             player.closeInventory();
         }
         else {
@@ -1797,21 +1819,6 @@ public class MysticEvents implements Listener {
                     }
                 } else {
                     Helper.sendWarningMessage(player, "You don't have enough coins!");
-                }
-            }
-
-            if (event.getClick() == ClickType.RIGHT) {
-                if (ItemDataUtils.hasData(clickedItem, "souls")) {
-                    MysticCurrencyUtils.exchangeSouls(player);
-                    player.openInventory(GuiHelper.getResourcesGui(player));
-                }
-                if (ItemDataUtils.hasData(clickedItem, "saps")) {
-                    MysticCurrencyUtils.exchangeSap(player);
-                    player.openInventory(GuiHelper.getResourcesGui(player));
-                }
-                if (ItemDataUtils.hasData(clickedItem, "fragments")) {
-                    MysticCurrencyUtils.exchangeFragments(player);
-                    player.openInventory(GuiHelper.getResourcesGui(player));
                 }
             }
 
@@ -1847,6 +1854,18 @@ public class MysticEvents implements Listener {
             Inventory next = PagedMysticRecipeGui.getPageFromItem(clickedItem, player);
             if (next != null)
                 inventory.setContents(next.getContents());
+        } else if (PagedMysticOptionsGui.isPaginated(clickedItem)) {
+            Inventory next = PagedMysticOptionsGui.getPageFromItem(clickedItem, player);
+            if (next != null)
+                inventory.setContents(next.getContents());
+        }  else if (PagedEnchantedCrateGui.isPaginated(clickedItem)) {
+            Inventory next = PagedEnchantedCrateGui.getPageFromItem(clickedItem, player);
+            if (next != null)
+                inventory.setContents(next.getContents());
+        } else if (PagedMysticResourcesGui.isPaginated(clickedItem)) {
+            Inventory next = PagedMysticResourcesGui.getPageFromItem(clickedItem, player);
+            if (next != null)
+                inventory.setContents(next.getContents());
         }
 
         Helper.updateViewer(player, inventory);
@@ -1857,7 +1876,33 @@ public class MysticEvents implements Listener {
         List<ItemStack> drops = event.getDrops();
         LivingEntity entity = event.getEntity();
         World world = entity.getWorld();
-        if (entity.getKiller() instanceof Player player) {
+        Player player = entity.getKiller();
+
+        if (player != null) {
+            if (entity instanceof Phantom) {
+                if (player.getInventory().getItemInMainHand().getType() == Material.IRON_SWORD) {
+                    if (Helper.rollChance(MysticResources.PHANTOMS_TEAR.getDropChance())) {
+                        drops.add(MysticResources.PHANTOMS_TEAR.getItemStack());
+                        Helper.sendResourceActionBar(player, MysticResources.PHANTOMS_TEAR);
+                    }
+                }
+            }
+            if (entity instanceof Stray) {
+                if (player.getInventory().getItemInMainHand().getType() == Material.STONE_SWORD) {
+                    if (Helper.rollChance(MysticResources.FROST_CRYSTAL.getDropChance())) {
+                        drops.add(MysticResources.FROST_CRYSTAL.getItemStack());
+                        Helper.sendResourceActionBar(player, MysticResources.FROST_CRYSTAL);
+                    }
+                }
+            }
+            if (entity instanceof EnderDragon) {
+                if (Helper.rollChance(MysticResources.DRAGONS_HEART.getDropChance())) {
+                    Helper.sendResourceActionBar(player, MysticResources.DRAGONS_HEART);
+                    Helper.forceGiveItem(player, MysticResources.DRAGONS_HEART.getItemStack());
+                }
+            }
+        }
+        if (player != null) {
 
             if (Helper.enchantmentExists(player, CORPSE_SINGULARITY)) {
                 int enchantmentLevel = Helper.getEnchantmentLevel(player, CORPSE_SINGULARITY);
@@ -1888,14 +1933,6 @@ public class MysticEvents implements Listener {
                         world.playSound(entity.getLocation(), Sound.ENTITY_DRAGON_FIREBALL_EXPLODE, 1, 1);
                     });
 
-                }
-            }
-
-            if (Helper.isHostile(entity)) {
-                if (Helper.rollChance(MysticCurrencyUtils.calculateSoulsChance(player))) {
-                    MysticCurrencyUtils.addSouls(player, 1);
-                    String actionBarMessage = "<gradient:#FF5555:#FFAA00>+1</gradient> <bold><#D08CFF>Mystic Soul</#D08CFF></bold>";
-                    Helper.sendActionBar(player, MiniMessage.miniMessage().deserialize(actionBarMessage));
                 }
             }
             if (Helper.enchantmentExists(player, ELITE_SOULKEY)) {

@@ -1,6 +1,7 @@
 package com.mdt168.mysticEnchantments.pages;
 
 import com.mdt168.mysticEnchantments.custom.BookTiers;
+import com.mdt168.mysticEnchantments.resources.PagedMysticResourcesGui;
 
 public class PagedGuis {
     public static final PagedEnchantmentsGui BASIC = PagedEnchantmentsGui.register(BookTiers.BASIC);
@@ -11,4 +12,5 @@ public class PagedGuis {
     public static final PagedMysticRecipeGui RECIPE = new PagedMysticRecipeGui();
     public static final PagedMysticOptionsGui OPTIONS = new PagedMysticOptionsGui();
     public static final PagedEnchantedCrateGui CRATE = new PagedEnchantedCrateGui();
+    public static final PagedMysticResourcesGui RESOURCES = new PagedMysticResourcesGui();
 }

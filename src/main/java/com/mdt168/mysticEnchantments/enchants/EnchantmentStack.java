@@ -5,6 +5,7 @@ import com.mdt168.mysticEnchantments.config.ConfigSetting;
 import com.mdt168.mysticEnchantments.config.ConfigSettings;
 import com.mdt168.mysticEnchantments.custom.BookTiers;
 import com.mdt168.mysticEnchantments.custom.dataUtils.EnchantmentsUtils;
+import com.mdt168.mysticEnchantments.resources.MysticTools;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
 import net.kyori.adventure.key.Key;
@@ -32,6 +33,7 @@ public class EnchantmentStack implements MysticEnchantmentComponent {
         this.typeOfEnchantment = typeOfEnchantment;
         this.bookTier = bookTier;
         this.chancePerLevel = chancePerLevel;
+
     }
     private EnchantmentStack(@Subst("mysticenchantments") String namespace, String name, String typeOfEnchantment, String description, double chancePerLevel, BookTiers bookTier) {
         this.id = name.toLowerCase().replace(" ", "_").replace("'", "");
